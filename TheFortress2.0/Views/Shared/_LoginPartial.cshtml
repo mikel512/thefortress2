@@ -1,0 +1,43 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item">
+            <a class="nav-link text-light text-nowrap" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                <i class="fas fa-user"></i>
+                Hello @User.Identity.Name!
+            </a>
+        </li>
+        <li class="nav-item">
+            <form class="form-inline" data-ajax="true" data-ajax-success="logoutSuccess" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new {area = ""})">
+                <button type="submit" class="nav-link btn btn-link text-light text-nowrap">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+            </form>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light text-nowrap" asp-area="" asp-controller="Admin" asp-action="Index">Admin Dashboard</a>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-light text-nowrap" data-toggle="modal" href="#registerModal">
+                <i class="fas fa-user-plus"></i>
+                Register
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light text-nowrap" data-toggle="modal" href="#loginModal">
+                <i class="fas fa-sign-in-alt"></i>
+                Login
+            </a>
+        </li>
+    }
+</ul>

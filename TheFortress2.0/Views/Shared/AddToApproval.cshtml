@@ -1,0 +1,47 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@{
+    ViewData["Title"] = "Add a Concert";
+}
+
+<div class="row pt-4">
+    <div class="col-lg-4 col-md-2"></div>
+    <div class="col-lg-4 col-md-8 pl-5 pr-5 div-gradient rounded">
+        <div class="row pt-3">
+            <h4 class="mx-auto text-light">Use this form to add a concert</h4>
+        </div>
+        <hr class="hr-white"/>
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <p class="text-light">
+                    This form will add the concert/event to the queue to be approved by admin.
+                    After it is approved it will be viewable in the Schedule page.
+                    If you need any help or need faster approval either use the
+                    <a class="text-danger" asp-action="Contact" asp-controller="Home">Contact</a> page
+                    or message us through Instagram!
+                </p>
+                <div class="col-1"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-10">
+                @if (this.User.IsInRole("Trusted") || this.User.IsInRole("Administrator"))
+                {
+                    <partial name="~/Views/Trusted/_TrustedConcertForm.cshtml"/>
+                }
+                else
+                {
+                    <partial name="~/Views/Home/_LocalConcertForm.cshtml"/>
+                }
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <br/>
+        <br/>
+
+    </div>
+    <div class="col-lg-4 col-md-2"></div>
+
+</div>

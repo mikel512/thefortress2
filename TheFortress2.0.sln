@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29409.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheFortress2.0", "TheFortress2.0\TheFortress2.0.csproj", "{7F4F7CA9-8AF7-4893-BF1B-38F8EBE66057}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLibrary", "DataAccessLibrary\DataAccessLibrary.csproj", "{5855C545-F169-4199-B312-1A7B0CE86541}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7F4F7CA9-8AF7-4893-BF1B-38F8EBE66057}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F4F7CA9-8AF7-4893-BF1B-38F8EBE66057}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F4F7CA9-8AF7-4893-BF1B-38F8EBE66057}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F4F7CA9-8AF7-4893-BF1B-38F8EBE66057}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5855C545-F169-4199-B312-1A7B0CE86541}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5855C545-F169-4199-B312-1A7B0CE86541}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5855C545-F169-4199-B312-1A7B0CE86541}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5855C545-F169-4199-B312-1A7B0CE86541}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {52F1535F-CD95-4CB8-B390-07AD90C238B4}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,148 @@
+﻿@using DataAccessLibrary.Models
+@model AspNetRole
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Users";
+    var users = (List<UserWithRole>)ViewData["Users"];
+    var roles = (List<AspNetRole>)ViewData["Roles"];
+}
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-8">
+
+            <div class="card card-indigo">
+                <div class="card-header border-transparent">
+                    <h3 class="card-title">Current Users</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table m-0">
+                            <thead>
+                                <tr>
+                                    <th>User ID</th>
+                                    <th>UserName</th>
+                                    <th>Email</th>
+                                    <th>Email Confirmed</th>
+                                    <th>Role</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in users)
+                                {
+                                    <tr>
+                                        <td>@item.Id</td>
+                                        <td>@item.UserName</td>
+                                        <td>@item.Email</td>
+                                        <td>@item.EmailConfirmed</td>
+                                        <td>@item.NormalizedName</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.table-responsive -->
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer clearfix">
+                </div>
+                <!-- /.card-footer -->
+            </div>
+
+        </div>
+
+        <div class="col-4">
+            <div class="card card-green">
+                <div class="card-header border-transparent">
+                    <h3 class="card-title">Current Available Roles</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table m-0">
+                            <thead>
+                                <tr>
+                                    <th>Role ID</th>
+                                    <th>Role Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in roles)
+                                {
+                                    <tr>
+                                        <td>@item.Id</td>
+                                        <td>@item.Name</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.table-responsive -->
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer clearfix">
+                    <a href="#addRoleModal" data-toggle="modal" class="btn btn-sm btn-info float-left">Add a new role</a>
+                </div>
+                <!-- /.card-footer -->
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addRoleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Add a new role</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="AddRoleAjax" asp-controller="Admin"
+                  data-ajax="true"
+                  data-ajax-method="POST"
+                  data-ajax-update="#roleAjax">
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div id="roleAjax">
+                                <div asp-validation-summary="All" class="text-danger"></div>
+                                <div class="form-group">
+                                    <label for="roleName">Role name</label>
+                                    <input asp-for="@Model.Name" type="text" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="clearCodeModal()">Close</button>
+                    <button type="submit" class="btn btn-primary" onclick="clearCodeModal">Add Code</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,125 @@
+﻿@using DataAccessLibrary.Models
+@{
+    Layout = "_AdminLayout";
+    var concerts = (List<LocalConcert>)ViewData["LocalConcerts"];
+    var codes = (List<TrustedCode>)ViewData["Codes"];
+    var concertQueue = (List<ApprovalQueue>)ViewData["ConcertQueue"];
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-8">
+
+            <!-- TABLE: LATEST CONCERTS-->
+            @await Html.PartialAsync("_ConcertsTablePartial", concerts)
+
+            <div class="card card-lime">
+                <div class="card-body">
+                    <h5 class="card-title">Upcoming House Shows</h5>
+
+                    <p class="card-text">
+                        Some quick example text to build on the card title and make up the bulk of the card's
+                        content.
+                    </p>
+                    <a href="#" data-toggle="modal" class="btn btn-primary">Add a date</a>
+                </div>
+            </div><!-- /.card -->
+        </div>
+
+
+        <div class="col-4">
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="m-0">Current Trusted Codes</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table" id="codesTable">
+                            <thead>
+                                <tr>
+                                    <th>Code Id</th>
+                                    <th>Code</th>
+                                    <th>Times Used</th>
+                                    <th>Max Use</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in codes)
+                                {
+                                    <tr id="@item.TrustedCodeId">
+                                        <td>@item.TrustedCodeId</td>
+                                        <td>@item.CodeString</td>
+                                        <td>@item.TimesUsed</td>
+                                        <td>@item.MaxTimesUsed</td>
+                                        <td>
+                                            <form asp-action="DeleteCodeAjax" asp-controller="Admin"
+                                                  data-ajax="true"
+                                                  data-ajax-method="GET"
+                                                  asp-route-codeId="@item.TrustedCodeId"
+                                                  data-ajax-success="deleteCodeSuccess"
+                                                  data-ajax-failure="deleteCodeFailure">
+                                                <button type="submit" class="btn badge-danger text-light" href="#">Delete</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer clearfix">
+                    <a href="#addCodeModal" data-toggle="modal" class="btn btn-sm btn-info float-left">Add a new code</a>
+                </div>
+            </div>
+
+            <div class="card card-orange card-outline">
+                <div class="card-header">
+                    <h5 class="m-0">Approval Queue</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Queue Id</th>
+                                    <th>Submitted by</th>
+                                    <th>Concert Id</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in concertQueue)
+                                {
+                                    <tr>
+                                        <td>@item.QueueId</td>
+                                        <td>@item.UserName</td>
+                                        <td>@item.LocalConcertId</td>
+                                        <td>
+                                            <a class="btn btn-success" href="#">
+                                                Approve
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a asp-action="DeleteQueueEntryAjax" asp-controller="Admin"
+                                               asp-route-queueId="@item.QueueId"
+                                               class="btn btn-danger">
+                                                Delete
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+    <!-- /.row -->
+</div><!-- /.container-fluid -->
+@await Html.PartialAsync("_AdminModalsPartial.cshtml")

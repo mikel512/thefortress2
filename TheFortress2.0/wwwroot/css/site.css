@@ -1,0 +1,214 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+
+/*!
+ * Start Bootstrap - Simple Sidebar (https://startbootstrap.com/template-overviews/simple-sidebar)
+ * Copyright 2013-2019 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-simple-sidebar/blob/master/LICENSE)
+ */
+.comment-collapse{
+    margin-left: -400px;
+}
+body {
+    overflow-x: hidden;
+}
+
+#sidebar-wrapper {
+    min-height: 100vh;
+    margin-left: -15rem;
+    -webkit-transition: margin .25s ease-out;
+    -moz-transition: margin .25s ease-out;
+    -o-transition: margin .25s ease-out;
+    transition: margin .25s ease-out;
+}
+
+#sidebar-wrapper .sidebar-heading {
+    padding: 0.875rem 1.25rem;
+    font-size: 1.2rem;
+}
+
+#sidebar-wrapper .list-group {
+    width: 15rem;
+}
+
+#page-content-wrapper {
+    min-width: 100vw;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    margin-left: 0;
+}
+
+@media (min-width: 768px) {
+    #sidebar-wrapper {
+        margin-left: 0;
+    }
+
+    #page-content-wrapper {
+        min-width: 0;
+        width: 100%;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: -15rem;
+    }
+}
+/*Extra padding and margin*/
+.popover{
+    max-width: 100px;
+    max-height: 200px;
+}
+.pl-6,
+.px-6 {
+    padding-left: 4rem !important;
+}
+
+.mr-6,
+.mx-6 {
+    margin-right: 4rem !important;
+}
+
+/*Extra site css*/
+.card-comment{
+    /*!* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,000000+2,000000+100&0.5+1,0+85 *!*/
+    /*background: -moz-linear-gradient(top,  rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.5) 1%, rgba(0,0,0,0.49) 2%, rgba(0,0,0,0) 85%, rgba(0,0,0,0) 100%); !* FF3.6-15 *!*/
+    /*background: -webkit-linear-gradient(top,  rgba(0,0,0,0.5) 0%,rgba(0,0,0,0.5) 1%,rgba(0,0,0,0.49) 2%,rgba(0,0,0,0) 85%,rgba(0,0,0,0) 100%); !* Chrome10-25,Safari5.1-6 *!*/
+    /*background: linear-gradient(to bottom,  rgba(0,0,0,0.5) 0%,rgba(0,0,0,0.5) 1%,rgba(0,0,0,0.49) 2%,rgba(0,0,0,0) 85%,rgba(0,0,0,0) 100%); !* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ *!*/
+    /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#80000000', endColorstr='#00000000',GradientType=0 ); !* IE6-9 *!*/
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,000000+2,000000+100&0.3+1,0+85 */
+    background: -moz-linear-gradient(top,  rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.3) 1%, rgba(0,0,0,0.3) 2%, rgba(0,0,0,0) 85%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top,  rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.3) 1%,rgba(0,0,0,0.3) 2%,rgba(0,0,0,0) 85%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom,  rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.3) 1%,rgba(0,0,0,0.3) 2%,rgba(0,0,0,0) 85%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4d000000', endColorstr='#00000000',GradientType=0 ); /* IE6-9 */
+
+}
+.card-transparent {
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#1f1f1f+0,1f1f1f+100&0.65+0,0.7+24,0.7+77,0.7+99,0+100,0.78+100 */
+    background: -moz-linear-gradient(top, rgba(31,31,31,0.65) 0%, rgba(31,31,31,0.7) 24%, rgba(31,31,31,0.7) 77%, rgba(31,31,31,0.7) 99%, rgba(31,31,31,0.78) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(31,31,31,0.65) 0%,rgba(31,31,31,0.7) 24%,rgba(31,31,31,0.7) 77%,rgba(31,31,31,0.7) 99%,rgba(31,31,31,0.78) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(31,31,31,0.65) 0%,rgba(31,31,31,0.7) 24%,rgba(31,31,31,0.7) 77%,rgba(31,31,31,0.7) 99%,rgba(31,31,31,0.78) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a61f1f1f', endColorstr='#c71f1f1f',GradientType=0 ); /* IE6-9 */
+}
+.card-transparent-comment {
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#ffffff+0,ffffff+100&1+0,0+7,0+8,0+8 */
+    background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(255,255,255,0) 7%, rgba(255,255,255,0) 8%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(255,255,255,0) 7%,rgba(255,255,255,0) 8%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(255,255,255,0) 7%,rgba(255,255,255,0) 8%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=0 ); /* IE6-9 */
+
+}
+.make-transparent {
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#ffffff+0,ffffff+7&1+0,1+0,0+0 */
+    background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 7%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(255,255,255,0) 7%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(255,255,255,0) 0%,rgba(255,255,255,0) 7%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#00ffffff',GradientType=0 ); /* IE6-9 */
+}
+.hr-white {
+    border-top: 1px solid whitesmoke;
+}
+
+.tower-icon {
+    background: url(../img/favicon.ico);
+    height: 20px;
+    width: 20px;
+    display: block;
+}
+
+.navbar-gradient {
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#292929+0,505050+100&1+0,0.7+92,0+100 */
+    background: -moz-linear-gradient(top, rgba(41,41,41,1) 0%, rgba(77,77,77,0.7) 92%, rgba(80,80,80,0) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(41,41,41,1) 0%,rgba(77,77,77,0.7) 92%,rgba(80,80,80,0) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(41,41,41,1) 0%,rgba(77,77,77,0.7) 92%,rgba(80,80,80,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#292929', endColorstr='#00505050',GradientType=0 ); /* IE6-9 */
+}
+
+.div-gradient {
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#3a3a3a+0,3a3a3a+100&0.65+0,0.7+99,0.7+100,0.7+100,0+100 */
+    background: -moz-linear-gradient(top, rgba(58,58,58,0.65) 0%, rgba(58,58,58,0.7) 99%, rgba(58,58,58,0) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(58,58,58,0.65) 0%,rgba(58,58,58,0.7) 99%,rgba(58,58,58,0) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(58,58,58,0.65) 0%,rgba(58,58,58,0.7) 99%,rgba(58,58,58,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a63a3a3a', endColorstr='#003a3a3a',GradientType=0 ); /* IE6-9 */
+}
+
+.spacer-div {
+    margin-top: 20em;
+}
+
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+}
+
+/* Provide sufficient contrast against white background */
+a {
+    color: #0366d6;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.border-top {
+    border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+    font-size: 1rem;
+    line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    background: url(/img/bgs/46174609662_d193d68e8c_k.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100%;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px; /* Vertically center the text there */
+}
+

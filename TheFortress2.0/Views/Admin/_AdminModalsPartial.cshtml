@@ -1,0 +1,59 @@
+﻿<div class="modal fade" id="addConcertModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Add a concert date</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="AddConcertAjax" asp-controller="Admin" 
+                  id="addConcertForm"
+                  data-ajax="true"
+                  data-ajax-method="POST"
+                  data-ajax-success="addConcertSuccess"
+                  data-ajax-failure="addConcertFailure">
+
+                <div class="modal-body">
+                    @await Html.PartialAsync("_LocalConcertForm.cshtml")
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="clearConcertModal()">Close</button>
+                    <button type="submit" class="btn btn-primary" onclick="clearConcertModal">Add Date</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addCodeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Add a new trusted code</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="AddCodeAjax" asp-controller="Admin" 
+                  id="addCodeForm"
+                  data-ajax="true"
+                  data-ajax-method="POST"
+                  data-ajax-success="addCodeSuccess"
+                  data-ajax-failure="addCodeFailure">
+
+                <div class="modal-body">
+                    @await Html.PartialAsync("_CodeForm.cshtml")
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" >Add Code</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,120 @@
+﻿@model TheFortress.Models.InputModel
+
+@*This modal holds the registration form*@
+<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Create a new account</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="RegisterAjax" asp-controller="Manage"
+                  data-ajax="true"
+                  data-ajax-method="POST"
+                  data-ajax-update="#registerAjax"
+                  >
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div id="registerAjax">
+                                <div asp-validation-summary="All" class="text-danger"></div>
+                                <div class="form-group">
+                                    <label asp-for="RegisterModel.UserNameReg"></label>
+                                    <input asp-for="RegisterModel.UserNameReg" class="form-control"/>
+                                    <span asp-validation-for="RegisterModel.UserNameReg" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="RegisterModel.Email"></label>
+                                    <input asp-for="RegisterModel.Email" class="form-control"/>
+                                    <span asp-validation-for="RegisterModel.Email" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="RegisterModel.PasswordReg"></label>
+                                    <input asp-for="RegisterModel.PasswordReg" class="form-control"/>
+                                    <span asp-validation-for="RegisterModel.PasswordReg" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="RegisterModel.ConfirmPassword"></label>
+                                    <input asp-for="RegisterModel.ConfirmPassword" class="form-control"/>
+                                    <span asp-validation-for="RegisterModel.ConfirmPassword" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <div class="checkbox">
+                                        <label asp-for="RegisterModel.IsArtist">
+                                            <input asp-for="RegisterModel.IsArtist"/>
+                                            @Html.DisplayNameFor(m => m.RegisterModel.IsArtist)
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @* @await Html.PartialAsync("/Areas/Identity/Pages/Account/Register.cshtml") *@
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+@*This modal holds the login form*@
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Log In</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form data-ajax="true" asp-action="LoginAjax" asp-controller="Manage"
+                  data-ajax-success="loginSuccess"
+                  data-ajax-failure="loginFailure"
+                  data-ajax-method="POST">
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div id="loginAjax">
+                                <div class="form-group">
+                                    <label asp-for="LoginModel.UserNameLogin"></label>
+                                    <input asp-for="LoginModel.UserNameLogin" class="form-control"/>
+                                    <span asp-validation-for="LoginModel.UserNameLogin" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="LoginModel.PasswordLogin"></label>
+                                    <input asp-for="LoginModel.PasswordLogin" class="form-control"/>
+                                    <span asp-validation-for="LoginModel.PasswordLogin" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <div class="checkbox">
+                                        <label asp-for="LoginModel.RememberMe">
+                                            <input asp-for="LoginModel.RememberMe"/>
+                                            @Html.DisplayNameFor(m => m.LoginModel.RememberMe)
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @* @await Html.PartialAsync("/Areas/Identity/Pages/Account/Login.cshtml") *@
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Log in</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,98 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - The Fortress</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/fontawesome-free/css/all.min.css">
+    @*<link rel="stylesheet" href="~/limonte-sweetalert2/sweetalert2.min.css" />*@
+    @*<link rel="stylesheet" href="sweetalert2.min.css">*@
+    <link rel="stylesheet" href="~/css/adminlteCUSTOM.css"/>
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="icon" type="image/x-icon" href="~/img/icons/favicon.ico">
+
+</head>
+<body class="sidebar-collapse" id="main-body-element">
+    <header>
+        <nav class="navbar navbar-light navbar-gradient mb-4 ml-auto">
+            <div class="container-fluid">
+                <a class="navbar-brand text-light text-nowrap" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/img/icons/castle_1.png" width="40" height="40" />
+                    The Fortress
+                </a>
+                <div class="col-lg-2 col-md-1"></div>
+                <div class="mx-auto pr-4">
+                    <h2 class="text-light pr-4">@ViewBag.Title</h2>
+                </div>
+                <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#mainNav" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse" id="mainNav">
+                    <div class="row">
+                        <div class="col-4"></div>
+                        <ul class="nav navbar-nav ml-auto nav-pills">
+                            <li class="nav-item">
+                                <a class="nav-link text-light text-nowrap" asp-area="" asp-controller="Home" asp-action="Index">
+                                    <i class="fas fa-gopuram"></i>
+                                    Home
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light text-nowrap" asp-area="" asp-controller="Home" asp-action="Concerts">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    Schedule
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light text-nowrap" asp-action="Contact" asp-controller="Home">
+                                    <i class="fas fa-tty"></i>
+                                    Contact
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light text-nowrap" asp-area="" asp-controller="Home" asp-action="Privacy">
+                                    <i class="fas fa-user-secret"></i>
+                                    About Us/Privacy
+                                </a>
+                            </li>
+                            <partial name="_UserLoggedInPartial" />
+                        </ul>
+                        <partial name="_LoginPartial" />
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container-fluid">
+        <main role="main" class="pb-0">
+            @RenderBody()
+        </main>
+    </div>
+    @if (!SignInManager.IsSignedIn(User))
+    {
+        <partial name="_IdentityModals"/>
+    }
+
+    <footer class="footer text-muted">
+        <div class="container">
+            &copy; 2019 - TheFortress - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-ajax-unobtrusive@3.2.6/dist/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/js/adminlte.min.js"></script>
+    <script src="~/lib/popper.js/popper.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    @*<script src="~/limonte-sweetalert2/sweetalert2.min.js"></script>*@
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

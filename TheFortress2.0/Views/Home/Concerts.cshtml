@@ -1,0 +1,113 @@
+﻿@using DataAccessLibrary.Models
+@using DataAccessLibrary.SqlDataAccess
+@using TheFortress.Utilities
+@{
+    ViewData["Title"] = "Schedule";
+    var items = (Dictionary<int, List<LocalConcert>>) ViewData["concertDictionary"];
+}
+
+<aside class="main-sidebar sidebar-dark-primary elevation-4" style="float: left">
+    <!-- Brand Logo -->
+    <div class="row">
+        <div class="col-9">
+            <h2 href="#" class="brand-link mx-auto">
+                <i class="far fa-comments img-circle elevation-3"></i>
+                <span class="brand-text font-weight-light">Comments for <span id="comment-section"></span></span>
+            </h2>
+        </div>
+        <div class="col-3 pt-2 pr-4 pb-2">
+            <a class="btn btn-outline-light btn-lg btn-block text-light" data-widget="pushmenu">Hide</a>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="row sidebar pr-4">
+        <div class="col-12">
+            <!-- Sidebar Menu -->
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    @* comments go here  *@
+                    @foreach (var concert in items.Values)
+                    {
+                        foreach (var c in concert)
+                        {
+                            @await Html.PartialAsync("_CommentsPartial", c)
+                        }
+                    }
+                </ul>
+            </nav>
+            <!-- /.sidebar-menu -->
+        </div>
+    </div>
+    <!-- /.sidebar -->
+</aside>
+<div class="row">
+    <br/>
+    <br/>
+    <br/>
+</div>
+<div class="row">
+    <nav aria-label="Page navigation example" class="mx-auto pr-5">
+        <ul class="pagination pagination-lg justify-content-center" id="concertPaginationMonths">
+            @foreach (var key in items.Keys)
+            {
+                var dt = new DateTime(1, key, 1);
+                string month = dt.ToString("MMMM");
+                <li class="page-item">
+                    <a class="page-link" id="@key" href="#" onclick="showConcertPagination(this.id)">@month</a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>
+<div class="row">
+    <div class="col-lg-10 col-md-12 mx-auto">
+        @foreach (var item in items)
+        {
+            string containerId = "concert" + item.Key;
+            @:<div class="container pt-5 col-lg-12 col-md-10" id="@containerId" style="display:none">
+            @for (int i = 0; i < item.Value.Count; i++)
+            {
+                if (i == item.Value.Count - 1 && item.Value.Count % 3 != 0)
+                {
+                    <div class="row pb-5">
+                        <div class="col-4 pr-5 mx-auto">
+                            @Html.RenderConcertCard(item.Value[i])
+
+                        </div>
+                    </div>
+                    break;
+                }
+                if (i % 3 == 0 && i == item.Value.Count - 2)
+                {
+                    <div class="row pb-5">
+                        <div class="col-8 pr-5 mx-auto">
+                            <div class="card-deck">
+                                @Html.RenderConcertCard(item.Value[i])
+
+                                @Html.RenderConcertCard(item.Value[i + 1])
+                            </div>
+                        </div>
+                    </div>
+                    break;
+                }
+                if (i % 3 == 0)
+                {
+                    @:<div class="row pb-5">
+                    @:<div class="col-12 pr-5">
+                    @:<div class="card-deck">
+                }
+                @Html.RenderConcertCard(item.Value[i])
+
+                @if (i % 3 == 2)
+                {
+                    @:</div>
+                    @:</div>
+                    @:</div>
+                }
+            }
+            @:</div>
+        }
+    </div>
+</div>
+@await Html.PartialAsync("_CommentModals")

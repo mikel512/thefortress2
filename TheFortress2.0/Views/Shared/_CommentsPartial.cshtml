@@ -1,0 +1,75 @@
+@using DataAccessLibrary.Models
+@using Microsoft.AspNetCore.Identity
+@using TheFortress.Utilities
+@inject SignInManager<IdentityUser> SignInManager
+@model EventConcert
+@{
+    var eventId = (int) Model.EventConcertId;
+    var comments = Model.Comments;
+
+}
+
+<div class="comments-div" id="@eventId" style="display: none">
+    <div class="row pt-1 pb-4">
+        <div class="col-2"></div>
+        <div class="col-8">
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <button class="btn btn-primary btn-lg btn-block" data-toggle="modal"
+                        href="#addCommentModal" data-eventid="@eventId">
+                    Add a comment
+                </button>
+            }
+            else
+            {
+                <p class="text-light text-nowrap">
+                    Hello, 
+                    <a class="text-indigo text-nowrap" data-toggle="modal" href="#loginModal">
+                        Sign in
+                    </a>
+                    or 
+                    <a class="text-indigo text-nowrap" data-toggle="modal" href="#registerModal">
+                        Register
+                    </a>
+                    to add comments.
+                </p>
+            }
+        </div>
+        <div class="col-2"></div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-12 pr-4">
+            <ul>
+                @if (comments != null)
+                {
+                    @foreach (var item in comments)
+                    {
+                        <div class='card card-primary card-comment' id='@item.CommentId'>
+                            <div class='card-header'>
+                                <h3 class='card-title'>@item.UserName</h3>
+                                <div class='card-tools'>
+                                    <button type='button' class='btn btn-tool' data-card-widget='collapse'>
+                                        <i class='fas fa-minus'></i>
+                                    </button>
+                                    <button type='button' class='btn btn-tool' data-toggle='modal'
+                                            href='#replyModal' data-parentid='@item.CommentId'
+                                            data-eventid="@item.EventId">
+                                        <i class='fas fa-reply'></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class='card-body div-gradient'>
+                                <p class="text-light">@item.Content</p>
+                                <br/>
+                                @* @(new HtmlString(Html.RenderCommentTree(item))) *@
+                                @Html.RenderCommentTree(item)
+                            </div>
+                        </div>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+</div>

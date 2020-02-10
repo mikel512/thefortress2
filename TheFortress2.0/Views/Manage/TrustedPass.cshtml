@@ -1,0 +1,27 @@
+﻿@model DataAccessLibrary.Models.TrustedCode
+@{
+    ViewData["Title"] = "Pass?";
+    Layout = "_ManageLayout";
+}
+
+<div class=" pt-4" xmlns="http://www.w3.org/1999/html">
+    <h4 class="text-light pl-3">@ViewData["Title"]</h4>
+    
+    <div class="row">
+        <div class="col-md-6 pl-4">
+            <form asp-action="UseTrustedPassAjax" asp-controller="Manage" method="post"
+                  data-ajax="true"
+                  data-ajax-success="genericSuccess"
+                  data-ajax-failure="genericFailure">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <input asp-for="CodeString" class="form-control"/>
+                </div>
+                <button id="update-profile-button" type="submit" class="btn btn-primary">Enter</button>
+            </form>
+        </div>
+    </div>
+    <br/>
+    <br/>
+</div>
+

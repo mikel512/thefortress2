@@ -1,0 +1,18 @@
+﻿@model DataAccessLibrary.Models.TrustedCode
+<div class="row">
+    <div class="col-12">
+        <div id="codeAjax">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CodeString"></label>
+                <input asp-for="CodeString" class="form-control" />
+                <span asp-validation-for="CodeString" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaxTimesUsed"></label>
+                <input asp-for="MaxTimesUsed" class="form-control" />
+                <span asp-validation-for="MaxTimesUsed" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+</div>

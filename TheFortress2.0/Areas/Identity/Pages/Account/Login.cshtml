@@ -1,0 +1,53 @@
+﻿@page
+@model TheFortress.Models.InputModel
+@{
+    ViewData["Title"] = "Log in";
+}
+<div class="row pt-4">
+    <div class="col-lg-4 col-md-2"></div>
+    <div class="col-lg-4 col-md-8 pl-5 pr-5 div-gradient rounded">
+        <div class="row pt-3">
+            <h3 class="mx-auto text-light">Please log in to proceed</h3>
+        </div>
+        <hr class="hr-white"/>
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-10">
+                @* <form data-ajax="true" asp-action="LoginAjax" asp-controller="Manage" *@
+                @*       data-ajax-success="loginSuccess" *@
+                @*       data-ajax-failure="loginFailure" *@
+                @*       data-ajax-method="POST"> *@
+                @* *@
+                @*     <div class="col-12"> *@
+                @*         <div class="form-group"> *@
+                @*             <label class="text-light" asp-for="LoginModel.UserNameLogin"></label> *@
+                @*             <input asp-for="LoginModel.UserNameLogin" class="form-control"/> *@
+                @*             <span asp-validation-for="LoginModel.UserNameLogin" class="text-danger"></span> *@
+                @*         </div> *@
+                @*         <div class="form-group"> *@
+                @*             <label class="text-light" asp-for="LoginModel.PasswordLogin"></label> *@
+                @*             <input asp-for="LoginModel.PasswordLogin" class="form-control"/> *@
+                @*             <span asp-validation-for="LoginModel.PasswordLogin" class="text-danger"></span> *@
+                @*         </div> *@
+                @*         <div class="form-group"> *@
+                @*             <div class="checkbox"> *@
+                @*                 <label class="text-light" asp-for="LoginModel.RememberMe"> *@
+                @*                     <input asp-for="LoginModel.RememberMe"/> *@
+                @*                     @Html.DisplayNameFor(m => m.LoginModel.RememberMe) *@
+                @*                 </label> *@
+                @*             </div> *@
+                @*         </div> *@
+                @*     </div> *@
+                @* *@
+                @*     <button type="submit" class="btn btn-primary">Log in</button> *@
+                @* *@
+                @* </form> *@
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <br/>
+        <br/>
+
+    </div>
+    <div class="col-lg-4 col-md-2"></div>
+</div>

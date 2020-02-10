@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29409.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheFortress2.0", "TheFortress2.0.csproj", "{DEAEFEA1-9A0D-4AE8-9772-A70B98E27A2B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{7F984D2A-08DA-4F22-B229-57368A8B594B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DEAEFEA1-9A0D-4AE8-9772-A70B98E27A2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEAEFEA1-9A0D-4AE8-9772-A70B98E27A2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEAEFEA1-9A0D-4AE8-9772-A70B98E27A2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEAEFEA1-9A0D-4AE8-9772-A70B98E27A2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F984D2A-08DA-4F22-B229-57368A8B594B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F984D2A-08DA-4F22-B229-57368A8B594B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F984D2A-08DA-4F22-B229-57368A8B594B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F984D2A-08DA-4F22-B229-57368A8B594B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {52F1535F-CD95-4CB8-B390-07AD90C238B4}
+	EndGlobalSection
+EndGlobal

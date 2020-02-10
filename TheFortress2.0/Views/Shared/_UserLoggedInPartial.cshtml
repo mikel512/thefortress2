@@ -1,0 +1,22 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Authorization
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@inject IAuthorizationService AuthorizationService
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="nav-item">
+        @*<a class="nav-link text-light text-nowrap" asp-area="Up" asp-page="/BufferedSingleFileUploadPhysical">*@
+        <a class="nav-link text-light text-nowrap" asp-action="AddToApproval" asp-controller="Home">
+            <i class="fas fa-calendar-plus"></i>
+            Add a concert!
+        </a>
+    </li>
+    @if (this.User.IsInRole("Trusted"))
+    {
+        <a class="nav-link text-light text-nowrap" asp-action="HouseShows" asp-controller="Trusted">
+            <i class="fas fa-skull"></i>
+            House Shows
+        </a>
+    }
+}
