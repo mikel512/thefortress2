@@ -13,35 +13,32 @@
         <div class="row">
             <div class="col-1"></div>
             <div class="col-10">
-                @* <form data-ajax="true" asp-action="LoginAjax" asp-controller="Manage" *@
-                @*       data-ajax-success="loginSuccess" *@
-                @*       data-ajax-failure="loginFailure" *@
-                @*       data-ajax-method="POST"> *@
-                @* *@
-                @*     <div class="col-12"> *@
-                @*         <div class="form-group"> *@
-                @*             <label class="text-light" asp-for="LoginModel.UserNameLogin"></label> *@
-                @*             <input asp-for="LoginModel.UserNameLogin" class="form-control"/> *@
-                @*             <span asp-validation-for="LoginModel.UserNameLogin" class="text-danger"></span> *@
-                @*         </div> *@
-                @*         <div class="form-group"> *@
-                @*             <label class="text-light" asp-for="LoginModel.PasswordLogin"></label> *@
-                @*             <input asp-for="LoginModel.PasswordLogin" class="form-control"/> *@
-                @*             <span asp-validation-for="LoginModel.PasswordLogin" class="text-danger"></span> *@
-                @*         </div> *@
-                @*         <div class="form-group"> *@
-                @*             <div class="checkbox"> *@
-                @*                 <label class="text-light" asp-for="LoginModel.RememberMe"> *@
-                @*                     <input asp-for="LoginModel.RememberMe"/> *@
-                @*                     @Html.DisplayNameFor(m => m.LoginModel.RememberMe) *@
-                @*                 </label> *@
-                @*             </div> *@
-                @*         </div> *@
-                @*     </div> *@
-                @* *@
-                @*     <button type="submit" class="btn btn-primary">Log in</button> *@
-                @* *@
-                @* </form> *@
+                <form data-ajax="true" asp-action="LoginAjax" asp-controller="Manage"
+                      data-ajax-success="loginSuccess"
+                      data-ajax-failure="loginFailure"
+                      data-ajax-method="POST">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label class="text-light" asp-for="LoginModel.UserNameLogin"></label>
+                            <input asp-for="LoginModel.UserNameLogin" class="form-control"/>
+                            <span asp-validation-for="LoginModel.UserNameLogin" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-light" asp-for="LoginModel.PasswordLogin"></label>
+                            <input asp-for="LoginModel.PasswordLogin" class="form-control"/>
+                            <span asp-validation-for="LoginModel.PasswordLogin" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label class="text-light" asp-for="LoginModel.RememberMe">
+                                    <input asp-for="LoginModel.RememberMe"/>
+                                    @Html.DisplayNameFor(m => m.LoginModel.RememberMe)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Log in</button>
+                </form>
             </div>
             <div class="col-1"></div>
         </div>

@@ -21,13 +21,15 @@ namespace TheFortress.Controllers
     [Authorize(Roles = "User, Artist, Trusted, Administrator")]
     public class ManageController : FortressController<ManageController>
     {
+        private readonly SignInManager<IdentityUser> _signInManager;
         public ManageController(ILogger<ManageController> logger, 
             UserManager<IdentityUser> userManager, 
             ApplicationDbContext applicationDbContext, 
-            RoleManager<IdentityRole> roleManager) : base(logger, userManager, applicationDbContext, roleManager)
+            RoleManager<IdentityRole> roleManager,
+            SignInManager<IdentityUser> signInManager) : base(logger, userManager, applicationDbContext, roleManager)
         {
+            _signInManager = signInManager;
         }
-        private readonly SignInManager<IdentityUser> _signInManager;
         // private readonly UserManager<IdentityUser> _userManager;
         // private readonly ILogger<ManageController> _logger;
         // private readonly IEmailSender _emailSender;

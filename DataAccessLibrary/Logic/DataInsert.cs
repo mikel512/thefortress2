@@ -4,8 +4,9 @@ using System.Data;
 using System.Data.SqlClient;
 using Dapper;
 using DataAccessLibrary.Models;
+using DataAccessLibrary.SqlDataAccess;
 
-namespace DataAccessLibrary.SqlDataAccess
+namespace DataAccessLibrary.Logic
 {
     public class DataInsert : DataAccess
     {

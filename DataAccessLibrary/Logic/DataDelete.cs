@@ -1,4 +1,6 @@
-﻿namespace DataAccessLibrary.SqlDataAccess
+﻿using DataAccessLibrary.SqlDataAccess;
+
+namespace DataAccessLibrary.Logic
 {
     public class DataDelete : DataAccess
     {

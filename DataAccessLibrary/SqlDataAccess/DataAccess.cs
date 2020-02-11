@@ -5,6 +5,7 @@ using Dapper;
 using System.Data.SqlClient;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -20,17 +21,14 @@ namespace DataAccessLibrary.SqlDataAccess
             _configuration = configuration;
         }
 
-
         public string ConnectionString
         {
             get => Connection();
             set => _connection = value;
         }
 
-        public string Connection()
+        private string Connection()
         {
-            // AppConfiguration conn = new AppConfiguration();
-            // return conn.ConnectionString;
             var str = _configuration.Database.GetDbConnection().ConnectionString;
             return str;
         }
@@ -54,7 +52,7 @@ namespace DataAccessLibrary.SqlDataAccess
 
         public List<T> ExecuteProcedure<T>(string procedure, params KeyValuePair<string, object>[] pairs)
         {
-            List<T> list = new List<T>();
+            var list = new List<T>();
             using (var conn = new SqlConnection(ConnectionString))
             {
                 conn.Open();
@@ -65,9 +63,8 @@ namespace DataAccessLibrary.SqlDataAccess
 
                 var p = new DynamicParameters(pairs);
 
-                list = conn.Query<T>(command.CommandText, p).ToList();
+                list = conn.Query<T>(procedure, p, commandType: CommandType.StoredProcedure).ToList();
             }
-
             return list;
         }
 
@@ -95,7 +92,7 @@ namespace DataAccessLibrary.SqlDataAccess
             return id;
         }
 
-        public static class Pairing
+        protected static class Pairing
         {
             public static KeyValuePair<string, object> Of(string key, object value)
             {
@@ -104,25 +101,3 @@ namespace DataAccessLibrary.SqlDataAccess
         }
     }
 }
-
-//     public class AppConfiguration
-//     {
-//         public readonly string _connectionString = string.Empty;
-//
-//         public AppConfiguration()
-//         {
-//             var configurationBuilder = new ConfigurationBuilder();
-//             var path = Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json");
-//             configurationBuilder.AddJsonFile(path, false);
-//
-//             var root = configurationBuilder.Build();
-//             _connectionString = root.GetSection("ConnectionStrings").GetSection("DefaultConnection").Value;
-//             var appSetting = root.GetSection("ApplicationSettings");
-//         }
-//
-//         public string ConnectionString
-//         {
-//             get => _connectionString;
-//         }
-//     }
-// }
