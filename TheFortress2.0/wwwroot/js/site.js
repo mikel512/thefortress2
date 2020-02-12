@@ -315,9 +315,56 @@ function showConcertPagination(pagination_id) {
 
 
 // file upload
-let file = document.getElementById("FlyerUrlUpload");
-let formData = new FormData();
+$("#showUploadButton").click(function () {
+    let file = document.getElementById("FlyerUrlUpload");
+    let formData = new FormData();
+
+    formData.append("file", file.files[0]);
+    formData.append('artists', $('#sfArtists').val());
+    formData.append('venue', $('#sfVenueName').val());
+    formData.append('timeStart', $('#sfTimeStart').val());
+    formData.append('timeEnd', $('#sfTimeEnd').val());
+    console.log(file.files[0]);
+    console.log(formData.get('artists'));
+    console.log(formData.get('timeStart'));
+
+    console.log(formData);
+    $.ajax({
+        url: "/Upload/UploadConcertAjax",
+        type: "POST",
+        processData: false,
+        contentType: false,
+        data: formData,
+        success: function () {
+            //alert("File uploaded!");
+            successToast.fire({
+                title: 'Concert added to queue successfully. Redirecting to Home page.',
+                position: 'center',
+                timer: 2000,
+                onClose: () => {
+                    sleep(100);
+                    window.location.href = "/Home/Index"
+                }
+            });
+        },
+        error: function (xhr, options, error) {
+            errorToast.fire({
+                title: 'Something went wrong.',
+                position: 'center',
+                timer: 2000,
+                onClose: () => {
+                    sleep(100);
+                    window.location.reload();
+                }
+            });
+            console.log("do some error handling here");
+        }
+    });
+});
 $("#concertUploadButton").click(function () {
+    let file = document.getElementById("FlyerUrlUpload");
+    let formData = new FormData();
+    
     formData.append("file", file.files[0]);
     formData.append('artists', $('#cfArtists').val());
     formData.append('venue', $('#cfVenueName').val());
@@ -329,7 +376,7 @@ $("#concertUploadButton").click(function () {
     
     console.log(formData);
     $.ajax({
-        url: "/Upload/UploadAjax",
+        url: "/Upload/UploadConcertAjax",
         type: "POST",
         processData: false,
         contentType: false,

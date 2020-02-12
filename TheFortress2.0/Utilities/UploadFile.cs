@@ -1,7 +1,9 @@
 ﻿using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using DataAccessLibrary.Models;
 using Microsoft.AspNetCore.Http;
+using DataAccessLibrary.Security;
 
 namespace TheFortress.Utilities
 {
@@ -17,6 +19,10 @@ namespace TheFortress.Utilities
                 file.FileName);
             var trustedFileNameForFileStorage = Path.GetRandomFileName() + ".jpg";
 
+            var byteArr = ConvertToBytes(file);
+            var scan = new VirusScan();
+            scan.TestScan(byteArr);
+            
             var storagePath = Path.Combine(path, trustedFileNameForFileStorage);
             await using (var targetStream = System.IO.File.Create(storagePath))
             {
@@ -32,5 +38,14 @@ namespace TheFortress.Utilities
 
             FilePath = path;
         }
+        private byte[] ConvertToBytes(IFormFile image)
+        {
+            byte[] CoverImageBytes = null;
+            BinaryReader reader = new BinaryReader(image.OpenReadStream());
+            CoverImageBytes = reader.ReadBytes((int)image.Length);
+            return CoverImageBytes;
+        }
+        
+        
     }
 }

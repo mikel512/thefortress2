@@ -46,7 +46,47 @@ namespace TheFortress.Controllers
         private static readonly FormOptions _defaultFormOptions = new FormOptions();
 
         [HttpPost]
-        [Route("Upload/UploadAjax")]
+        [Route("Upload/UploadShowAjax")]
+        [Authorize(Roles = "User, Artist, Trusted, Administrator")]
+        public async Task<IActionResult> AddShowDateToQueue()
+        {
+            var postedFile = Request.Form.Files[0]; // Now you have the file in the postedFile variable.
+            string artists = Request.Form["artists"];
+            string venue = Request.Form["venue"];
+            DateTime dateStart = Convert.ToDateTime(Request.Form["timeStart"]);
+            DateTime? dateEnd = (Request.Form["timeEnd"] == "")? DateTime.MinValue : Convert.ToDateTime(Request.Form["timeEnd"]);
+                
+            //check if file length is too long
+            if (postedFile.Length > _fileSizeLimit)
+            {
+                ModelState.AddModelError("File",
+                    $"The request couldn't be processed (File size exceeded).");
+                // Log error
+                return BadRequest(ModelState);
+            }
+            
+            // Upload class
+            var upload = new UploadFile();
+            await upload.Upload(postedFile, _targetFilePath);
+            
+            // Add the rest of the entries to database if the file upload is successful
+            var concert = new LocalConcert()
+            {
+                Artists = artists,
+                FlyerUrl = upload.FilePath,
+                TimeStart = dateStart,
+                TimeEnd = dateEnd,
+                VenueName = venue
+            };
+            ClaimsPrincipal currentUser = this.User;
+            string currentUserId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+            Insert.CreateQueuedDate(concert, currentUserId);
+
+            return Ok();
+        }
+        
+        [HttpPost]
+        [Route("Upload/UploadConcertAjax")]
         [Authorize(Roles = "User, Artist, Trusted, Administrator")]
         public async Task<IActionResult> AddConcertDateToQueue()
         {
