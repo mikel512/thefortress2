@@ -1,27 +1,31 @@
 ﻿using DataAccessLibrary.SqlDataAccess;
+using DataAccessLibrary.Utilities;
 
 namespace DataAccessLibrary.Logic
 {
-    public class DataDelete : DataAccess
+    public class DbDelete
     {
+        private readonly DataAccess _dataAccess;
+
+        public DbDelete(DataAccess dataAccess)
+        {
+            _dataAccess = dataAccess;
+        }
         public int DeleteConcert(int eventId, int localConcertId)
         {
-            return ExecuteProcedure("DeleteLocalConcert", "", 
+            return _dataAccess.ExecuteProcedure("DeleteLocalConcert", "", 
                 Pairing.Of("@eventId", eventId), Pairing.Of("@concertId", localConcertId));
         }
         public int DeleteCode(int codeId)
         {
-            return ExecuteProcedure("DeleteTrustedCode", "",
+            return _dataAccess.ExecuteProcedure("DeleteTrustedCode", "",
                 Pairing.Of("@codeid", codeId));
         }
         public int DeleteQueueEntry(int queueId)
         {
-            return ExecuteProcedure("DeleteQueueEntry", "",
+            return _dataAccess.ExecuteProcedure("DeleteQueueEntry", "",
                 Pairing.Of("@queueid", queueId));
         }
 
-        public DataDelete(ApplicationDbContext configuration) : base(configuration)
-        {
-        }
     }
 }

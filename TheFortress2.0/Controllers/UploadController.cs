@@ -45,32 +45,17 @@ namespace TheFortress.Controllers
         // limits for request body data.
         private static readonly FormOptions _defaultFormOptions = new FormOptions();
 
-        // public UploadController(ILogger<UploadController> logger, IConfiguration config)
-        // {
-        //     _logger = logger;
-        //     _fileSizeLimit = config.GetValue<long>("FileSizeLimit");
-        //
-        //     // To save physical files to a path provided by configuration:
-        //     _targetFilePath = config.GetValue<string>("StoredFilesPath");
-        //
-        //     // To save physical files to the temporary files folder, use:
-        //     //_targetFilePath = Path.GetTempPath();
-        // }
-
         [HttpPost]
         [Route("Upload/UploadAjax")]
         [Authorize(Roles = "User, Artist, Trusted, Administrator")]
         public async Task<IActionResult> AddConcertDateToQueue()
         {
-            var postedFile = Request.Form.Files[0];
-            // Now you have the file in the postedFile variable.
-
+            var postedFile = Request.Form.Files[0]; // Now you have the file in the postedFile variable.
             string artists = Request.Form["artists"];
             string venue = Request.Form["venue"];
             DateTime dateStart = Convert.ToDateTime(Request.Form["timeStart"]);
             DateTime? dateEnd = (Request.Form["timeEnd"] == "")? DateTime.MinValue : Convert.ToDateTime(Request.Form["timeEnd"]);
                 
-
             //check if file length is too long
             if (postedFile.Length > _fileSizeLimit)
             {
@@ -79,36 +64,23 @@ namespace TheFortress.Controllers
                 // Log error
                 return BadRequest(ModelState);
             }
-
-            // Don't trust the file name sent by the client. To display
-            // the file name, HTML-encode the value.
-            var trustedFileNameForDisplay = WebUtility.HtmlEncode(
-                    postedFile.FileName);
-            var trustedFileNameForFileStorage = Path.GetRandomFileName() + ".jpg";
-
-            using (var targetStream = System.IO.File.Create(
-                Path.Combine(_targetFilePath, trustedFileNameForFileStorage)))
-            {
-                await postedFile.CopyToAsync(targetStream);
-
-                _logger.LogInformation(
-                    "Uploaded file '{TrustedFileNameForDisplay}' saved to " +
-                    "'{TargetFilePath}' as {TrustedFileNameForFileStorage}",
-                    trustedFileNameForDisplay, _targetFilePath,
-                    trustedFileNameForFileStorage);
-            }
+            
+            // Upload class
+            var upload = new UploadFile();
+            await upload.Upload(postedFile, _targetFilePath);
+            
             // Add the rest of the entries to database if the file upload is successful
             var concert = new LocalConcert()
             {
                 Artists = artists,
-                FlyerUrl = Path.Combine(_targetFilePath, trustedFileNameForFileStorage),
+                FlyerUrl = upload.FilePath,
                 TimeStart = dateStart,
                 TimeEnd = dateEnd,
                 VenueName = venue
             };
-            //ClaimsPrincipal currentUser = this.User;
-            //string currentUserId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
-            //insert.CreateQueuedDate(concert, currentUserId);
+            ClaimsPrincipal currentUser = this.User;
+            string currentUserId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+            Insert.CreateQueuedDate(concert, currentUserId);
 
             return Ok();
         }

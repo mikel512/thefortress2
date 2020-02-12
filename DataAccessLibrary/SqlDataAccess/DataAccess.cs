@@ -29,8 +29,7 @@ namespace DataAccessLibrary.SqlDataAccess
 
         private string Connection()
         {
-            var str = _configuration.Database.GetDbConnection().ConnectionString;
-            return str;
+            return _configuration.Database.GetDbConnection().ConnectionString;
         }
 
         public List<T> ExecuteProcedure<T>(string procedure)
@@ -91,13 +90,38 @@ namespace DataAccessLibrary.SqlDataAccess
 
             return id;
         }
-
-        protected static class Pairing
+        // return dictionary that will serialise to json
+        public Dictionary<string,string> ExecuteProcedureJson(string procedure, string[] outputParams, params KeyValuePair<string, object>[] pairs)
         {
-            public static KeyValuePair<string, object> Of(string key, object value)
+            var dict = new Dictionary<string, string>();
+            using (var conn = new SqlConnection(ConnectionString))
             {
-                return new KeyValuePair<string, object>(key, value);
+                conn.Open();
+                var command = new SqlCommand(procedure, conn)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                var p = new DynamicParameters(pairs);
+                if (outputParams.Length > 0)
+                {
+                    for (int i = 0; i < outputParams.Length; i++)
+                    {
+                        p.Add(outputParams[i], dbType: DbType.Int32, direction: ParameterDirection.Output);
+                    }
+                }
+
+                conn.Execute(procedure, p, commandType: CommandType.StoredProcedure);
+                if (outputParams.Length > 0)
+                {
+                    for (int i = 0; i < outputParams.Length; i++)
+                    {
+                        dict.Add(i.ToString(), p.Get<int>(outputParams[i]).ToString());
+                    }
+                }
             }
+            return dict;
         }
+
     }
 }

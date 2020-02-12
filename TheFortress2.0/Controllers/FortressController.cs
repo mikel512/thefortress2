@@ -8,13 +8,13 @@ namespace TheFortress.Controllers
 {
     public class FortressController<T> : Controller
     {
-        
+        private readonly DataAccess _dataAccess;
         protected readonly ILogger<T> _logger;
         protected readonly UserManager<IdentityUser> _userManager;
         protected readonly RoleManager<IdentityRole> _roleManager;
-        protected DataRead Read;
-        protected DataInsert Insert;
-        protected DataDelete Delete;
+        protected readonly DbRead Read;
+        protected readonly DbInsert Insert;
+        protected readonly DbDelete Delete;
         
         public FortressController(ILogger<T> logger, UserManager<IdentityUser> userManager, 
             ApplicationDbContext applicationDbContext, RoleManager<IdentityRole> roleManager)
@@ -22,10 +22,11 @@ namespace TheFortress.Controllers
             _logger = logger;
             _userManager = userManager;
             _roleManager = roleManager;
-            
-            Read = new DataRead(applicationDbContext);
-            Insert = new DataInsert(applicationDbContext);
-            Delete = new DataDelete(applicationDbContext);
+            _dataAccess = new DataAccess(applicationDbContext);
+
+            Read = new DbRead(_dataAccess);
+            Insert = new DbInsert(_dataAccess);
+            Delete = new DbDelete(_dataAccess);
         }
     }
 }

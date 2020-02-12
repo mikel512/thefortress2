@@ -315,15 +315,18 @@ function showConcertPagination(pagination_id) {
 
 
 // file upload
-let file = document.getElementById("FlyerUrl");
+let file = document.getElementById("FlyerUrlUpload");
 let formData = new FormData();
-$("#fileUploadButton").click(function () {
+$("#concertUploadButton").click(function () {
     formData.append("file", file.files[0]);
-    formData.append('artists', $('#Artists').val());
-    formData.append('venue', $('#VenueName').val());
-    formData.append('timeStart', $('#TimeStart').val());
-    formData.append('timeEnd', $('#TimeEnd').val());
+    formData.append('artists', $('#cfArtists').val());
+    formData.append('venue', $('#cfVenueName').val());
+    formData.append('timeStart', $('#cfTimeStart').val());
+    formData.append('timeEnd', $('#cfTimeEnd').val());
     console.log(file.files[0]);
+    console.log(formData.get('artists'));
+    console.log(formData.get('timeStart'));
+    
     console.log(formData);
     $.ajax({
         url: "/Upload/UploadAjax",
@@ -342,9 +345,17 @@ $("#fileUploadButton").click(function () {
                     window.location.href = "/Home/Index"
                 }
             });
-
         },
         error: function (xhr, options, error) {
+            errorToast.fire({
+                title: 'Something went wrong.',
+                position: 'center',
+                timer: 2000,
+                onClose: () => {
+                    sleep(100);
+                    window.location.reload();
+                }
+            });
             console.log("do some error handling here");
         }
     });
@@ -546,3 +557,12 @@ $(window).scroll(function () {
     }
 });
 
+// Trusted account form switch
+$('#showConcertForm').click(function(){
+   $('#showForm').hide();
+   $('#concertForm').show();
+});
+$('#showShowForm').click(function(){
+    $('#showForm').show();
+    $('#concertForm').hide();
+});

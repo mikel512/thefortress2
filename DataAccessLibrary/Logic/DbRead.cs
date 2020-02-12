@@ -1,49 +1,52 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using DataAccessLibrary.Models;
 using DataAccessLibrary.SqlDataAccess;
+using DataAccessLibrary.Utilities;
 
 namespace DataAccessLibrary.Logic
 {
-    public class DataRead : DataAccess
+    public class DbRead
     {
-        public DataRead(ApplicationDbContext configuration) : base(configuration)
+        private readonly DataAccess _dataAccess;
+
+        public DbRead(DataAccess dataAccess)
         {
+            _dataAccess = dataAccess;
         }
         
         // Simple multi-row queries
         public List<ApprovalQueue> GetQueueDash()
         {
-            return ExecuteProcedure<ApprovalQueue>("GetQueueAdminDashboard");
+            return _dataAccess.ExecuteProcedure<ApprovalQueue>("GetQueueAdminDashboard");
         }
 
         public List<LocalConcert> GetLocalConcerts()
         {
-            return ExecuteProcedure<LocalConcert>("GetLocalConcerts");
+            return _dataAccess.ExecuteProcedure<LocalConcert>("GetLocalConcerts");
         }
 
         public List<HouseShow> GetHouseShows()
         {
-            return ExecuteProcedure<HouseShow>("GetHouseShows");
+            return _dataAccess.ExecuteProcedure<HouseShow>("GetHouseShows");
         }
         public List<TrustedCode> GetAllTrustedCodes()
         {
-            return ExecuteProcedure<TrustedCode>("GetAllTrustedCodes");
+            return _dataAccess.ExecuteProcedure<TrustedCode>("GetAllTrustedCodes");
         }
 
         public List<UserWithRole> GetUsersWithRoles()
         {
-            return ExecuteProcedure<UserWithRole>("GetAllUsersWithRoles");
+            return _dataAccess.ExecuteProcedure<UserWithRole>("GetAllUsersWithRoles");
         }
 
         public List<AspNetRole> GetRoles()
         {
-            return ExecuteProcedure<AspNetRole>("GetRoles");
+            return _dataAccess.ExecuteProcedure<AspNetRole>("GetRoles");
         }
 
         public List<MessageModel> GetAdminMessages()
         {
-            return ExecuteProcedure<MessageModel>("GetAdminMessages");
+            return _dataAccess.ExecuteProcedure<MessageModel>("GetAdminMessages");
         }
         
         // Read the event dates
@@ -89,7 +92,7 @@ namespace DataAccessLibrary.Logic
         }
         private List<LocalConcert> GetApprovedConcerts()
         {
-            var list = ExecuteProcedure<LocalConcert>("GetApprovedLocalConcerts");
+            var list = _dataAccess.ExecuteProcedure<LocalConcert>("GetApprovedLocalConcerts");
             foreach (var concert in list)
             {
                 var concertId = concert.EventConcertId;
@@ -103,7 +106,7 @@ namespace DataAccessLibrary.Logic
         }
         private List<HouseShow> GetApprovedShows()
         {
-            var list = ExecuteProcedure<HouseShow>("GetApprovedHouseShows");
+            var list = _dataAccess.ExecuteProcedure<HouseShow>("GetApprovedHouseShows");
             foreach (var concert in list)
             {
                 var concertId = concert.EventConcertId;
@@ -118,14 +121,14 @@ namespace DataAccessLibrary.Logic
         public int UseTrustedCode(string code, string userId)
         {
             // first check if code exists in db
-            int exists = ExecuteProcedure("CheckTrustedCode", "@count",
+            int exists = _dataAccess.ExecuteProcedure("CheckTrustedCode", "@count",
                 Pairing.Of("@code", code));
 
             // if exists = 1 continue, if 0 immediately exit
             if (exists == 0) return exists;
 
             // else, use the code
-            return ExecuteProcedure("UseCodeUser", null,
+            return _dataAccess.ExecuteProcedure("UseCodeUser", null,
                 Pairing.Of("@codeString", code),
                 Pairing.Of("@userId", userId));
         }
@@ -138,7 +141,7 @@ namespace DataAccessLibrary.Logic
             var commentDict = new Dictionary<int?, List<CommentModel>>();
             
             var allComments 
-                = ExecuteProcedure<CommentModel>("GetAllEventComments", 
+                = _dataAccess.ExecuteProcedure<CommentModel>("GetAllEventComments", 
                 Pairing.Of("@eventId", eventId));
             
             // sort into dictionary

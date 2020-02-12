@@ -4,7 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using DataAccessLibrary.Models;
 
-namespace DataAccessLibrary.Logic
+namespace DataAccessLibrary.Utilities
 {
     public class CommentTree
     {
