@@ -5,7 +5,10 @@ using System.Net;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using ASP;
+using DataAccessLibrary.FileStoreAccess;
 using DataAccessLibrary.Models;
+using DataAccessLibrary.Security;
 using DataAccessLibrary.SqlDataAccess;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -29,16 +32,18 @@ namespace TheFortress.Controllers
         private readonly long _fileSizeLimit;
         private readonly string[] _permittedExtensions = { ".jpg", ".jpeg" };
         private readonly string _targetFilePath;
+        private readonly FileStorageService _storageService;
         public UploadController(ILogger<UploadController> logger, 
             UserManager<IdentityUser> userManager, 
             ApplicationDbContext applicationDbContext, 
             RoleManager<IdentityRole> roleManager,
-            IConfiguration config) : base(logger, userManager, applicationDbContext, roleManager)
+            IConfiguration config,
+            FileStorageService storageService) : base(logger, userManager, applicationDbContext, roleManager)
         {
             _fileSizeLimit = config.GetValue<long>("FileSizeLimit");
-            
             // To save physical files to a path provided by configuration:
             _targetFilePath = config.GetValue<string>("StoredFilesPath");
+            _storageService = storageService;
         }
 
         // Get the default form options so that we can use them to set the default 
@@ -66,14 +71,12 @@ namespace TheFortress.Controllers
             }
             
             // Upload class
-            var upload = new UploadFile();
-            await upload.Upload(postedFile, _targetFilePath);
             
             // Add the rest of the entries to database if the file upload is successful
             var concert = new LocalConcert()
             {
                 Artists = artists,
-                FlyerUrl = upload.FilePath,
+                // FlyerUrl = upload.FilePath,
                 TimeStart = dateStart,
                 TimeEnd = dateEnd,
                 VenueName = venue
@@ -104,16 +107,20 @@ namespace TheFortress.Controllers
                 // Log error
                 return BadRequest(ModelState);
             }
+
+            var byteFile = _storageService.ConvertToBytes(postedFile);
+            var uploadedUrl = await _storageService.StorePrescanImage(Path.GetRandomFileName() + ".jpeg", byteFile);
             
-            // Upload class
-            var upload = new UploadFile();
-            await upload.Upload(postedFile, _targetFilePath);
+            FileInfo f = new FileInfo(uploadedUrl);
+            VirusScan vs = new VirusScan();
+            vs.TestScan(f);
             
+
             // Add the rest of the entries to database if the file upload is successful
             var concert = new LocalConcert()
             {
                 Artists = artists,
-                FlyerUrl = upload.FilePath,
+                FlyerUrl = uploadedUrl,
                 TimeStart = dateStart,
                 TimeEnd = dateEnd,
                 VenueName = venue
@@ -176,15 +183,6 @@ namespace TheFortress.Controllers
                         var trustedFileNameForDisplay = WebUtility.HtmlEncode(
                                 contentDisposition.FileName.Value);
                         var trustedFileNameForFileStorage = Path.GetRandomFileName();
-
-                        // **WARNING!**
-                        // In the following example, the file is saved without
-                        // scanning the file's contents. In most production
-                        // scenarios, an anti-virus/anti-malware scanner API
-                        // is used on the file before making the file available
-                        // for download or for use by other systems. 
-                        // For more information, see the topic that accompanies 
-                        // this sample.
 
                         var streamedFileContent = await FileHelpers.ProcessStreamedFile(
                             section, contentDisposition, ModelState,

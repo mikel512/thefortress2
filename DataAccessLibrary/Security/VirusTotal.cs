@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using VirusTotalNet;
 using VirusTotalNet.Objects;
 using VirusTotalNet.ResponseCodes;
 using VirusTotalNet.Results;
+using Newtonsoft.Json;
 
 namespace DataAccessLibrary.Security
 {
     public class VirusScan
     {
-        public async void TestScan(byte[] file)
+        public async Task<string> TestScan(byte[] file, string fileName)
         {
             var virusTotal = new VirusTotal(@"7a2ad958f412ed5794e50740998f152989b505e39c1da44c53853c60a02a9a77");
 
@@ -21,7 +23,11 @@ namespace DataAccessLibrary.Security
             byte[] eicar = Encoding.ASCII.GetBytes(@"X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*");
 
             //Check if the file has been scanned before.
+            await virusTotal.ScanFileAsync(file, fileName);
             FileReport fileReport = await virusTotal.GetFileReportAsync(file);
+
+            var jsonReport = JsonConvert.SerializeObject(fileReport);
+            
             // await virusTotal.ScanFileAsync(file);
             // TODO use correct file scan function
 
@@ -40,25 +46,7 @@ namespace DataAccessLibrary.Security
                 PrintScan(fileResult);
             }
 
-            Console.WriteLine();
-
-            string scanUrl = "http://www.google.com/";
-
-            UrlReport urlReport = await virusTotal.GetUrlReportAsync(scanUrl);
-
-            bool hasUrlBeenScannedBefore = urlReport.ResponseCode == UrlReportResponseCode.Present;
-            Console.WriteLine("URL has been scanned before: " + (hasUrlBeenScannedBefore ? "Yes" : "No"));
-
-            //If the url has been scanned before, the results are embedded inside the report.
-            if (hasUrlBeenScannedBefore)
-            {
-                PrintScan(urlReport);
-            }
-            else
-            {
-                UrlScanResult urlResult = await virusTotal.ScanUrlAsync(scanUrl);
-                PrintScan(urlResult);
-            }
+            return jsonReport;
         }
         private static void PrintScan(UrlScanResult scanResult)
         {
