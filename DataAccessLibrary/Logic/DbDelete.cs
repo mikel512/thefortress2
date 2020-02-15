@@ -11,10 +11,10 @@ namespace DataAccessLibrary.Logic
         {
             _dataAccess = dataAccess;
         }
-        public int DeleteConcert(int eventId, int localConcertId)
+        public int DeleteConcert(int localConcertId)
         {
             return _dataAccess.ExecuteProcedure("DeleteLocalConcert", "", 
-                Pairing.Of("@eventId", eventId), Pairing.Of("@concertId", localConcertId));
+                Pairing.Of("@concertId", localConcertId));
         }
         public int DeleteCode(int codeId)
         {

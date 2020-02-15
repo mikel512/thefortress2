@@ -8,7 +8,7 @@ namespace TheFortress.Controllers
 {
     public class FortressController<T> : Controller
     {
-        private readonly DataAccess _dataAccess;
+        protected readonly DataAccess _dataAccess;
         protected readonly ILogger<T> _logger;
         protected readonly UserManager<IdentityUser> _userManager;
         protected readonly RoleManager<IdentityRole> _roleManager;

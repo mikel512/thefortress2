@@ -28,7 +28,7 @@
 
         <div class="col-4">
 
-            <div class="card">
+            <div class="card card-green">
                 <div class="card-header">
                     <h5 class="m-0">Current Trusted Codes</h5>
                 </div>
@@ -92,18 +92,26 @@
                             <tbody>
                                 @foreach (var item in concertQueue)
                                 {
-                                    <tr>
+                                    <tr id="@item.QueueId">
                                         <td>@item.QueueId</td>
                                         <td>@item.UserName</td>
                                         <td>@item.LocalConcertId</td>
                                         <td>
-                                            <a class="btn btn-success" href="#">
+                                            <a asp-action="ApproveQueueItemAjax" asp-controller="Admin"
+                                               asp-route-queueId="@item.QueueId"
+                                               data-ajax="true"
+                                               data-ajax-success="queueApproveSuccess"
+                                               data-ajax-failure="genericFailure"
+                                               class="btn btn-success">
                                                 Approve
                                             </a>
                                         </td>
                                         <td>
                                             <a asp-action="DeleteQueueEntryAjax" asp-controller="Admin"
                                                asp-route-queueId="@item.QueueId"
+                                               data-ajax="true"
+                                               data-ajax-success="queueRemoveSuccess"
+                                               data-ajax-failure="genericFailure"
                                                class="btn btn-danger">
                                                 Delete
                                             </a>
@@ -113,6 +121,9 @@
                             </tbody>
                         </table>
                     </div>
+                </div>
+                <div class="card-footer clearfix">
+                    <a href="#" data-toggle="modal" class="btn btn-sm btn-info float-left">View full queue</a>
                 </div>
             </div>
 

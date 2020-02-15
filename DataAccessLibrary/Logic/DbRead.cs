@@ -24,6 +24,10 @@ namespace DataAccessLibrary.Logic
         {
             return _dataAccess.ExecuteProcedure<LocalConcert>("GetLocalConcerts");
         }
+        public List<LocalConcert> GetApprovedLocalConcerts()
+        {
+            return _dataAccess.ExecuteProcedure<LocalConcert>("GetApprovedLocalConcerts");
+        }
 
         public List<HouseShow> GetHouseShows()
         {
