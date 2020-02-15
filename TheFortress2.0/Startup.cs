@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Cloudmersive.APIClient.NET.VirusScan.Model;
 using DataAccessLibrary.FileStoreAccess;
+using DataAccessLibrary.Security;
 using DataAccessLibrary.SqlDataAccess;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -43,7 +45,8 @@ namespace TheFortress
             services.AddRazorPages();
             services.AddTransient<UserManager<IdentityUser>>();
             services.AddTransient<IDataAccess, DataAccess>();
-            services.AddTransient<IFileStorageService, FileStorageService>();
+            services.AddTransient<IStorageService, StorageService>();
+            services.AddTransient<IVirusScanService, VirusScanService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

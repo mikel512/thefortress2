@@ -354,7 +354,7 @@ $("#showUploadButton").click(function () {
                 timer: 2000,
                 onClose: () => {
                     sleep(100);
-                    window.location.reload();
+                    // window.location.reload();
                 }
             });
             console.log("do some error handling here");
@@ -400,7 +400,7 @@ $("#concertUploadButton").click(function () {
                 timer: 2000,
                 onClose: () => {
                     sleep(100);
-                    window.location.reload();
+                    // window.location.reload();
                 }
             });
             console.log("do some error handling here");
