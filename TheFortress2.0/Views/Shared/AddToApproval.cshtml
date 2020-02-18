@@ -26,7 +26,7 @@
         </div>
         <div class="row">
             <div class="col-1"></div>
-            <div class="col-10">
+            <div class="col-10" id="addToApprovalForm">
                 @if (this.User.IsInRole("Trusted") || this.User.IsInRole("Administrator"))
                 {
                     <partial name="~/Views/Trusted/_TrustedConcertForm.cshtml"/>
@@ -36,6 +36,7 @@
                     <partial name="~/Views/Home/_LocalConcertForm.cshtml"/>
                 }
             </div>
+            <img src="~/img/icons/loading_skull.gif" class="col-10" id="loadingSkull" alt="" style="display: none"/>
             <div class="col-1"></div>
         </div>
         <br/>

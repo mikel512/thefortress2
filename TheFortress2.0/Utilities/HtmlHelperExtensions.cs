@@ -70,7 +70,7 @@ namespace TheFortress.Utilities
             var img1 = new HtmlTag("img", card).AddClass("card-img-top d-lg-none").Attr("height", 320)
                 .Attr("src", lc.FlyerUrl).Attr("width", 200)
                 .Attr("alt", "...");
-            var img2 = new HtmlTag("img", card).AddClass("card-img-top d-none d-lg-block").Attr("height", 420)
+            var img2 = new HtmlTag("img", card).AddClass("card-img-top d-none d-lg-block").Attr("height", 520)
                 .Attr("src", lc.FlyerUrl).Attr("width", 200)
                 .Attr("alt", "...");
 

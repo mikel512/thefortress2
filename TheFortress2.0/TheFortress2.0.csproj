@@ -27,11 +27,6 @@
 
 
   <ItemGroup>
-    <Folder Include="wwwroot\img\0000001\" />
-  </ItemGroup>
-
-
-  <ItemGroup>
     <ProjectReference Include="..\DataAccessLibrary\DataAccessLibrary.csproj" />
   </ItemGroup>
 

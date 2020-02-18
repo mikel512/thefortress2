@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using TheFortress.Models;
 using DataAccessLibrary.Models;
 using System.Security.Claims;
+using DataAccessLibrary.FileStoreAccess;
 using Microsoft.AspNetCore.Authorization;
 using DataAccessLibrary.Security;
 using Microsoft.AspNetCore.Identity;
@@ -18,10 +19,10 @@ namespace TheFortress.Controllers
 {
     public class HomeController : FortressController<HomeController>
     {
-        public HomeController(ILogger<HomeController> logger, 
+        public HomeController(ILogger<HomeController> logger, IStorageService storageService,
             UserManager<IdentityUser> userManager, 
             ApplicationDbContext applicationDbContext, 
-            RoleManager<IdentityRole> roleManager) : base(logger, userManager, applicationDbContext, roleManager)
+            RoleManager<IdentityRole> roleManager) : base(logger, userManager, storageService,applicationDbContext, roleManager)
         {
         }
 
@@ -43,7 +44,7 @@ namespace TheFortress.Controllers
             }
 
             ViewData["imgArray"] = imgArray;
-            ViewData["concertDictionary"] = Read.ApprovedConcertsByMonth();
+            // ViewData["concertDictionary"] = Read.ApprovedConcertsByMonth();
 
             //var scan = new VirusScan();
             //scan.TestScan();

@@ -16,6 +16,12 @@ namespace DataAccessLibrary.Utilities
         
         public List<CommentModel> GetEventComments()
         {
+            // if no comments, return
+            if (!_commentDict.ContainsKey(0))
+            {
+                return new List<CommentModel>();
+            }
+            
             // for each root comment, recursively build m-ary tree
             foreach (var item in _commentDict[0])
             {

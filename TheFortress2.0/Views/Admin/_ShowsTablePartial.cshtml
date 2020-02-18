@@ -1,6 +1,6 @@
 ﻿<div class="card card-primary">
     <div class="card-header border-transparent">
-        <h3 class="card-title">Upcoming Local Shows</h3>
+        <h3 class="card-title">Upcoming House Shows</h3>
         <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse">
                 <i class="fas fa-minus"></i>
@@ -16,10 +16,10 @@
             <table class="table m-0" id="localConcertsTable">
                 <thead>
                     <tr>
-                        <th>Concert ID</th>
+                        <th>Show ID</th>
                         <th>Artists</th>
                         <th>Time Start</th>
-                        <th>Venue</th>
+                        <th>Spot</th>
                         <th>Approval Status</th>
                         <th></th>
                     </tr>
@@ -27,11 +27,11 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        <tr id="@item.LocalConcertId">
-                            <td>@item.LocalConcertId</td>
+                        <tr id="@item.HouseShowId">
+                            <td>@item.HouseShowId</td>
                             <td>@item.Artists</td>
                             <td>@item.TimeStart</td>
-                            <td>@item.VenueName</td>
+                            <td>@item.HouseName</td>
                             @* TODO change isapproved to checkbox, update database onclick w/ ajax *@
                             <td>@item.IsApproved</td>
                             <td>
@@ -54,8 +54,8 @@
     </div>
     <!-- /.card-body -->
     <div class="card-footer clearfix">
-        <a href="#addConcertModal" data-toggle="modal" class="btn btn-sm btn-info float-left">Add a new date</a>
-        <a asp-action="Concerts" asp-controller="Admin" class="btn btn-sm btn-secondary float-right">View All Concerts</a>
+        <a href="#addShowModal" data-toggle="modal" class="btn btn-sm btn-info float-left">Add a new date</a>
+        <a asp-action="HouseShows" asp-controller="Admin" class="btn btn-sm btn-secondary float-right">View All House Shows</a>
     </div>
     <!-- /.card-footer -->
 </div>

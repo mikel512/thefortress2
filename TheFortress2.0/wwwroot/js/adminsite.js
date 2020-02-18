@@ -30,8 +30,9 @@ addCodeFailure = function (response) {
 queueRemoveSuccess = function (response) {
     const element = document.getElementById(response["0"]);
     element.parentNode.removeChild(element);
+    // TODO insert row to upcoming local shows table
     successToast.fire({
-        title: 'Queue item deleted successfully',
+        title: 'Queue item removed',
         position: 'top-end',
         timer: 3000
     })
@@ -40,7 +41,7 @@ queueApproveSuccess = function (response) {
     const element = document.getElementById(response["0"]);
     element.parentNode.removeChild(element);
     successToast.fire({
-        title: 'Queue item deleted successfully',
+        title: 'Queue item approved successfully',
         position: 'top-end',
         timer: 3000
     })

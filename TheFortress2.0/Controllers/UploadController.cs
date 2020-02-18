@@ -22,12 +22,12 @@ using Microsoft.Extensions.Logging;
 
 namespace TheFortress.Controllers
 {
+    [Authorize(Roles = "Artist, Trusted, Administrator")]
     public class UploadController : FortressController<UploadController>
     {
         private readonly long _fileSizeLimit;
         private readonly string[] _permittedExtensions = {".jpg", ".jpeg"};
         private readonly string _targetFilePath;
-        private readonly IStorageService _storageService;
         private readonly IVirusScanService _virusScanService;
 
         public UploadController(ILogger<UploadController> logger,
@@ -36,12 +36,11 @@ namespace TheFortress.Controllers
             RoleManager<IdentityRole> roleManager,
             IConfiguration config,
             IStorageService storageService,
-            IVirusScanService scanService) : base(logger, userManager, applicationDbContext, roleManager)
+            IVirusScanService scanService) : base(logger, userManager, storageService,applicationDbContext, roleManager)
         {
             _fileSizeLimit = config.GetValue<long>("FileSizeLimit");
             // To save physical files to a path provided by configuration:
             _targetFilePath = config.GetValue<string>("StoredFilesPath");
-            _storageService = storageService;
             _virusScanService = scanService;
         }
 
@@ -51,7 +50,6 @@ namespace TheFortress.Controllers
 
         [HttpPost]
         [Route("Upload/UploadShowAjax")]
-        [Authorize(Roles = "User, Artist, Trusted, Administrator")]
         public async Task<IActionResult> AddShowDateToQueue()
         {
             var postedFile = Request.Form.Files[0]; // Now you have the file in the postedFile variable.
@@ -94,56 +92,55 @@ namespace TheFortress.Controllers
         [Authorize(Roles = "User, Artist, Trusted, Administrator")]
         public async Task<IActionResult> AddConcertDateToQueue()
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            
+            var postedFile = Request.Form.Files[0]; // Now you have the file in the postedFile variable.
+            string artists = Request.Form["artists"];
+            string venue = Request.Form["venue"];
+            DateTime dateStart = Convert.ToDateTime(Request.Form["timeStart"]);
+            DateTime? dateEnd = (Request.Form["timeEnd"] == "")
+                ? DateTime.MinValue
+                : Convert.ToDateTime(Request.Form["timeEnd"]);
+
+            //check if file length is too long
+            if (postedFile.Length > _fileSizeLimit)
             {
-                var postedFile = Request.Form.Files[0]; // Now you have the file in the postedFile variable.
-                string artists = Request.Form["artists"];
-                string venue = Request.Form["venue"];
-                DateTime dateStart = Convert.ToDateTime(Request.Form["timeStart"]);
-                DateTime? dateEnd = (Request.Form["timeEnd"] == "")
-                    ? DateTime.MinValue
-                    : Convert.ToDateTime(Request.Form["timeEnd"]);
-
-                //check if file length is too long
-                if (postedFile.Length > _fileSizeLimit)
-                {
-                    ModelState.AddModelError("File",
-                        $"The request couldn't be processed (File size exceeded).");
-                    // Log error
-                    return BadRequest(ModelState);
-                }
-
-                // Scan file with VT, add report in json format to message queue
-                var report = await _virusScanService.VirusTotalScan(postedFile, postedFile.FileName);
-                _storageService.AddQueueMessage(report);
-
-                // Scan file with Cloudmersive
-                bool? isClean = _virusScanService.CloudmersiveScan(postedFile);
-
-                // Upload file
-                var uploadedUrl = await _storageService.StoreFile(postedFile, isClean.Value);
-
-                // Add the rest of the entries to database if the file upload is successful
-                var concert = new LocalConcert()
-                {
-                    Artists = artists,
-                    FlyerUrl = uploadedUrl,
-                    TimeStart = dateStart,
-                    TimeEnd = dateEnd,
-                    VenueName = venue
-                };
-
-                // Get user id
-                ClaimsPrincipal currentUser = this.User;
-                string currentUserId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-                // Insert to db
-                Insert.CreateQueuedDate(concert, currentUserId);
-
-                return Ok();
+                ModelState.AddModelError("File",
+                    $"The request couldn't be processed (File size exceeded).");
+                // Log error
+                return BadRequest(ModelState);
             }
 
-            return BadRequest(ModelState);
+
+            // Scan file with Cloudmersive
+            var isClean = _virusScanService.CloudmersiveScan(postedFile);
+
+            // Upload file
+            var uploadedUrl = await _storageService.StoreImageFile(postedFile, isClean.Value);
+            
+            // Scan file with VT, add report in json format to message queue
+            var report = await _virusScanService.VirusTotalScan(postedFile, postedFile.FileName);
+            _storageService.AddQueueMessage(report);
+
+            // Add the rest of the entries to database if the file upload is successful
+            var concert = new LocalConcert()
+            {
+                Artists = artists,
+                FlyerUrl = uploadedUrl,
+                TimeStart = dateStart,
+                TimeEnd = dateEnd,
+                VenueName = venue
+            };
+
+            // Get user id
+            ClaimsPrincipal currentUser = this.User;
+            string currentUserId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            // Insert to db
+            Insert.CreateQueuedDate(concert, currentUserId);
+
+            return Ok();
+
         }
     }
 }

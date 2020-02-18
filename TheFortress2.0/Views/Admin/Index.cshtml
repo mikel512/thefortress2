@@ -1,9 +1,10 @@
 ﻿@using DataAccessLibrary.Models
 @{
     Layout = "_AdminLayout";
-    var concerts = (List<LocalConcert>)ViewData["LocalConcerts"];
-    var codes = (List<TrustedCode>)ViewData["Codes"];
-    var concertQueue = (List<ApprovalQueue>)ViewData["ConcertQueue"];
+    var concerts = (List<LocalConcert>) ViewData["LocalConcerts"];
+    var shows = (List<HouseShow>) ViewData["HouseShows"];
+    var codes = (List<TrustedCode>) ViewData["Codes"];
+    var concertQueue = (List<ApprovalQueue>) ViewData["ConcertQueue"];
 }
 <div class="container-fluid">
     <div class="row">
@@ -12,17 +13,9 @@
             <!-- TABLE: LATEST CONCERTS-->
             @await Html.PartialAsync("_ConcertsTablePartial", concerts)
 
-            <div class="card card-lime">
-                <div class="card-body">
-                    <h5 class="card-title">Upcoming House Shows</h5>
+            <!-- TABLE: LATEST SHOWS-->
+            @await Html.PartialAsync("_ShowsTablePartial", shows)
 
-                    <p class="card-text">
-                        Some quick example text to build on the card title and make up the bulk of the card's
-                        content.
-                    </p>
-                    <a href="#" data-toggle="modal" class="btn btn-primary">Add a date</a>
-                </div>
-            </div><!-- /.card -->
         </div>
 
 
@@ -36,34 +29,34 @@
                     <div class="table-responsive">
                         <table class="table" id="codesTable">
                             <thead>
-                                <tr>
-                                    <th>Code Id</th>
-                                    <th>Code</th>
-                                    <th>Times Used</th>
-                                    <th>Max Use</th>
-                                    <th></th>
-                                </tr>
+                            <tr>
+                                <th>Code Id</th>
+                                <th>Code</th>
+                                <th>Times Used</th>
+                                <th>Max Use</th>
+                                <th></th>
+                            </tr>
                             </thead>
                             <tbody>
-                                @foreach (var item in codes)
-                                {
-                                    <tr id="@item.TrustedCodeId">
-                                        <td>@item.TrustedCodeId</td>
-                                        <td>@item.CodeString</td>
-                                        <td>@item.TimesUsed</td>
-                                        <td>@item.MaxTimesUsed</td>
-                                        <td>
-                                            <form asp-action="DeleteCodeAjax" asp-controller="Admin"
-                                                  data-ajax="true"
-                                                  data-ajax-method="GET"
-                                                  asp-route-codeId="@item.TrustedCodeId"
-                                                  data-ajax-success="deleteCodeSuccess"
-                                                  data-ajax-failure="deleteCodeFailure">
-                                                <button type="submit" class="btn badge-danger text-light" href="#">Delete</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                }
+                            @foreach (var item in codes)
+                            {
+                                <tr id="@item.TrustedCodeId">
+                                    <td>@item.TrustedCodeId</td>
+                                    <td>@item.CodeString</td>
+                                    <td>@item.TimesUsed</td>
+                                    <td>@item.MaxTimesUsed</td>
+                                    <td>
+                                        <form asp-action="DeleteCodeAjax" asp-controller="Admin"
+                                              data-ajax="true"
+                                              data-ajax-method="GET"
+                                              asp-route-codeId="@item.TrustedCodeId"
+                                              data-ajax-success="deleteCodeSuccess"
+                                              data-ajax-failure="deleteCodeFailure">
+                                            <button type="submit" class="btn badge-danger text-light" href="#">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
                             </tbody>
                         </table>
                     </div>
@@ -81,43 +74,43 @@
                     <div class="table-responsive">
                         <table class="table">
                             <thead>
-                                <tr>
-                                    <th>Queue Id</th>
-                                    <th>Submitted by</th>
-                                    <th>Concert Id</th>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
+                            <tr>
+                                <th>Queue Id</th>
+                                <th>Submitted by</th>
+                                <th>Concert Id</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
                             </thead>
                             <tbody>
-                                @foreach (var item in concertQueue)
-                                {
-                                    <tr id="@item.QueueId">
-                                        <td>@item.QueueId</td>
-                                        <td>@item.UserName</td>
-                                        <td>@item.LocalConcertId</td>
-                                        <td>
-                                            <a asp-action="ApproveQueueItemAjax" asp-controller="Admin"
-                                               asp-route-queueId="@item.QueueId"
-                                               data-ajax="true"
-                                               data-ajax-success="queueApproveSuccess"
-                                               data-ajax-failure="genericFailure"
-                                               class="btn btn-success">
-                                                Approve
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <a asp-action="DeleteQueueEntryAjax" asp-controller="Admin"
-                                               asp-route-queueId="@item.QueueId"
-                                               data-ajax="true"
-                                               data-ajax-success="queueRemoveSuccess"
-                                               data-ajax-failure="genericFailure"
-                                               class="btn btn-danger">
-                                                Delete
-                                            </a>
-                                        </td>
-                                    </tr>
-                                }
+                            @foreach (var item in concertQueue)
+                            {
+                                <tr id="@item.QueueId">
+                                    <td>@item.QueueId</td>
+                                    <td>@item.UserName</td>
+                                    <td>@item.LocalConcertId</td>
+                                    <td>
+                                        <a asp-action="ApproveQueueItemAjax" asp-controller="Admin"
+                                           asp-route-queueId="@item.QueueId"
+                                           data-ajax="true"
+                                           data-ajax-success="queueApproveSuccess"
+                                           data-ajax-failure="genericFailure"
+                                           class="btn btn-success">
+                                            Approve
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a asp-action="DeleteQueueEntryAjax" asp-controller="Admin"
+                                           asp-route-queueId="@item.QueueId"
+                                           data-ajax="true"
+                                           data-ajax-success="queueRemoveSuccess"
+                                           data-ajax-failure="genericFailure"
+                                           class="btn btn-danger">
+                                            Delete
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
                             </tbody>
                         </table>
                     </div>
@@ -126,11 +119,9 @@
                     <a href="#" data-toggle="modal" class="btn btn-sm btn-info float-left">View full queue</a>
                 </div>
             </div>
-
         </div>
-
-
     </div>
     <!-- /.row -->
 </div><!-- /.container-fluid -->
+@* TODO create new users table? *@
 @await Html.PartialAsync("_AdminModalsPartial.cshtml")

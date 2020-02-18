@@ -1,3 +1,4 @@
+using DataAccessLibrary.FileStoreAccess;
 using DataAccessLibrary.SqlDataAccess;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,10 @@ namespace TheFortress.Controllers
 {
     public class TrustedController : FortressController<TrustedController>
     {
-        public TrustedController(ILogger<TrustedController> logger, UserManager<IdentityUser> userManager, ApplicationDbContext applicationDbContext, RoleManager<IdentityRole> roleManager) : base(logger, userManager, applicationDbContext, roleManager)
+        public TrustedController(ILogger<TrustedController> logger, IStorageService storageService,
+            UserManager<IdentityUser> userManager, 
+            ApplicationDbContext applicationDbContext, 
+            RoleManager<IdentityRole> roleManager) : base(logger, userManager, storageService,applicationDbContext, roleManager)
         {
         }
         // GET

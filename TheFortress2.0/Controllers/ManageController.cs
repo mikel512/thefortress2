@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using DataAccessLibrary.FileStoreAccess;
 using DataAccessLibrary.Models;
 using DataAccessLibrary.SqlDataAccess;
 using Microsoft.AspNetCore.Authentication;
@@ -22,11 +23,11 @@ namespace TheFortress.Controllers
     public class ManageController : FortressController<ManageController>
     {
         private readonly SignInManager<IdentityUser> _signInManager;
-        public ManageController(ILogger<ManageController> logger, 
+        public ManageController(ILogger<ManageController> logger, IStorageService storageService,
             UserManager<IdentityUser> userManager, 
             ApplicationDbContext applicationDbContext, 
             RoleManager<IdentityRole> roleManager,
-            SignInManager<IdentityUser> signInManager) : base(logger, userManager, applicationDbContext, roleManager)
+            SignInManager<IdentityUser> signInManager) : base(logger, userManager, storageService,applicationDbContext, roleManager)
         {
             _signInManager = signInManager;
         }
@@ -98,6 +99,7 @@ namespace TheFortress.Controllers
                         values: new { area = "Identity", userId = user.Id, code = code },
                         protocol: Request.Scheme);
 
+                    // TODO setup email confirmation service; use MailGun
                     //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                     //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 

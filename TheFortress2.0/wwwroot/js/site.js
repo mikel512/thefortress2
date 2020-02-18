@@ -165,6 +165,12 @@ commentSuccess = function (response) {
         }
     });
 };
+const warningToast = Swal.mixin({
+    toast: true,
+    icon: 'warning',
+    showConfirmButton: false,
+
+});
 
 // default Success toast
 const successToast = Swal.mixin({
@@ -266,6 +272,14 @@ $("#showUploadButton").click(function () {
     });
 });
 $("#concertUploadButton").click(function () {
+    warningToast.fire({
+        title: 'Verifying file; please wait.',
+        position: 'center',
+        timer: 1500,
+    });
+    $('#addToApprovalForm').hide();
+    $('#loadingSkull').show();
+    
     let file = document.getElementById("FlyerUrlUpload");
     let formData = new FormData();
 
@@ -465,4 +479,7 @@ $('#showConcertForm').click(function () {
 $('#showShowForm').click(function () {
     $('#showForm').show();
     $('#concertForm').hide();
+});
+
+$('#test').click(function(){
 });

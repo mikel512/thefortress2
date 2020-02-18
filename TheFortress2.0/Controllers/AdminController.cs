@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DataAccessLibrary.FileStoreAccess;
 using Microsoft.AspNetCore.Mvc;
 using DataAccessLibrary.Models;
 using DataAccessLibrary.SqlDataAccess;
@@ -12,11 +13,12 @@ using Microsoft.Extensions.Logging;
 
 namespace TheFortress.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class AdminController : FortressController<AdminController>
     {
-        public AdminController(ILogger<AdminController> logger, UserManager<IdentityUser> userManager,
+        public AdminController(ILogger<AdminController> logger, UserManager<IdentityUser> userManager,IStorageService storageService,
             ApplicationDbContext applicationDbContext, RoleManager<IdentityRole> roleManager) : base(logger,
-            userManager, applicationDbContext, roleManager)
+            userManager, storageService ,applicationDbContext, roleManager)
         {
         }
 
@@ -24,6 +26,7 @@ namespace TheFortress.Controllers
         public IActionResult Index()
         {
             ViewData["LocalConcerts"] = Read.GetApprovedLocalConcerts();
+            ViewData["HouseShows"] = Read.GetApprovedHouseShows();
             ViewData["Codes"] = Read.GetAllTrustedCodes();
             ViewData["ConcertQueue"] = Read.GetQueueDash();
             return View();
