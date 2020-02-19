@@ -55,50 +55,49 @@
     </form>
 
 </div>
-<a class="btn btn-primary text-nowrap" id="test">Add Concert</a>
-@* <div id="showForm" style="display: none"> *@
-@*     <form> *@
-@*         <div class="row"> *@
-@*             <div class="col-12"> *@
-@*                 <div asp-validation-summary="All" class="text-danger"></div> *@
-@*                 <div class="form-group"> *@
-@*                     <label class="text-light" asp-for="Show.Artists"></label> *@
-@*                     <input asp-for="Show.Artists" class="form-control"/> *@
-@*                     <span asp-validation-for="Show.Artists" class="text-danger"></span> *@
-@*                 </div> *@
-@*                 <div class="form-group"> *@
-@*                     <label class="text-light" asp-for="Show.HouseName"></label> *@
-@*                     <input asp-for="Show.HouseName" class="form-control"/> *@
-@*                     <span asp-validation-for="Show.HouseName" class="text-danger"></span> *@
-@*                 </div> *@
-@*                 <div class="form-group"> *@
-@*                     <label class="text-light" asp-for="Show.TimeStart"></label> *@
-@*                     <input type="date" class="form-control"/> *@
-@*                     <span asp-validation-for="Show.TimeStart" class="text-danger"></span> *@
-@*                 </div> *@
-@*                 <div class="form-group"> *@
-@*                     <label class="text-light" asp-for="Show.TimeEnd"></label> *@
-@*                     <input type="date" class="form-control"/> *@
-@*                     <span asp-validation-for="Show.TimeEnd" class="text-danger"></span> *@
-@*                 </div> *@
-@*                 <div class="form-group"> *@
-@*                     <label class="text-light" asp-for="FlyerUrlUpload"></label> *@
-@*                     <input asp-for="FlyerUrlUpload" class="form-control" accept=".jpg, .jpeg"/> *@
-@*                     <span asp-validation-for="FlyerUrlUpload" class="text-danger"></span> *@
-@*                 </div> *@
-@*                 <div class="form-group"> *@
-@*                     <label class="text-light" asp-for="Show.UserNotes"></label> *@
-@*                     <textarea asp-for="Show.UserNotes" class="form-control"  rows="4"></textarea> *@
-@*                     <span asp-validation-for="Show.UserNotes" class="text-danger"></span> *@
-@*                 </div> *@
-@*             </div> *@
-@*         </div> *@
-@*         <div class="row pt-2"> *@
-@*             <div class="col-9"></div> *@
-@*             <div class="col-3"> *@
-@*                 <a id="showUploadButton" class="btn btn-primary text-nowrap">Add House Show</a> *@
-@*                 <output form="uploadForm" name="result"></output> *@
-@*             </div> *@
-@*         </div> *@
-@*     </form> *@
-@* </div> *@
+<div id="showForm" style="display: none">
+    <form>
+        <div class="row">
+            <div class="col-12">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label class="text-light" asp-for="Show.Artists"></label>
+                    <input asp-for="Show.Artists" id="sfArtists" class="form-control"/>
+                    <span asp-validation-for="Show.Artists" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="text-light" asp-for="Show.VenueName"></label>
+                    <input asp-for="Show.VenueName" id="sfVenueName" class="form-control"/>
+                    <span asp-validation-for="Show.VenueName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="text-light" asp-for="Show.TimeStart"></label>
+                    <input asp-for="Show.TimeStart" id="sfTimeStart" class="form-control"/>
+                    <span asp-validation-for="Show.TimeStart" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="text-light" asp-for="Show.TimeEnd"></label>
+                    <input asp-for="Show.TimeEnd" id="sfTimeEnd" class="form-control"/>
+                    <span asp-validation-for="Show.TimeEnd" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="text-light" asp-for="FlyerUrlUpload"></label>
+                    <input asp-for="FlyerUrlUpload" id="FlyerUrlUpload-show" class="form-control" accept=".jpg, .jpeg"/>
+                    <span asp-validation-for="FlyerUrlUpload" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="text-light" asp-for="Show.UserNotes"></label>
+                    <textarea asp-for="Show.UserNotes" class="form-control"  rows="4"></textarea>
+                    <span asp-validation-for="Show.UserNotes" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row pt-2">
+            <div class="col-9"></div>
+            <div class="col-3">
+                <a id="showUploadButton" class="btn btn-primary text-nowrap">Add House Show</a>
+                <output form="uploadForm" name="result"></output>
+            </div>
+        </div>
+    </form>
+</div>

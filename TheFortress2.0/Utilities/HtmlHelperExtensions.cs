@@ -107,7 +107,7 @@ namespace TheFortress.Utilities
 
             var body1 = new HtmlTag("div", card).AddClass("card-body");
             var h5 = new HtmlTag("h5", body1).AddClass("card-title text-light mx-auto").Text(hs.Artists);
-            var p = new HtmlTag("p", body1).AddClass("card-text text-light").Text(hs.HouseName);
+            var p = new HtmlTag("p", body1).AddClass("card-text text-light").Text(hs.VenueName);
 
             var ul = new HtmlTag("ul", card).AddClass("list-group list-group-flush");
             var li1 = new HtmlTag("li", ul).AddClass("list-group-item make-transparent text-light")

@@ -53,12 +53,15 @@ namespace TheFortress.Controllers
         public async Task<IActionResult> AddShowDateToQueue()
         {
             var postedFile = Request.Form.Files[0]; // Now you have the file in the postedFile variable.
-            string artists = Request.Form["artists"];
-            string venue = Request.Form["venue"];
-            DateTime dateStart = Convert.ToDateTime(Request.Form["timeStart"]);
-            DateTime? dateEnd = (Request.Form["timeEnd"] == "")
-                ? DateTime.MinValue
-                : Convert.ToDateTime(Request.Form["timeEnd"]);
+            var houseShow = new HouseShow()
+            {
+                Artists = Request.Form["artists"],
+                TimeStart = Convert.ToDateTime(Request.Form["timeStart"]),
+                TimeEnd = (Request.Form["timeEnd"] == "")
+                                          ? DateTime.MinValue
+                                          : Convert.ToDateTime(Request.Form["timeEnd"]),
+                VenueName = Request.Form["venue"]
+            };
 
             //check if file length is too long
             if (postedFile.Length > _fileSizeLimit)
@@ -69,20 +72,21 @@ namespace TheFortress.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Upload class
+            // Scan file with Cloudmersive
+            var isClean = _virusScanService.CloudmersiveScan(postedFile);
+
+            // Upload file
+            houseShow.FlyerUrl = await _storageService.StoreImageFile(postedFile, isClean.Value);
+            
+            // Scan file with VT, add report in json format to message queue
+            var report = await _virusScanService.VirusTotalScan(postedFile, postedFile.FileName);
+            _storageService.AddQueueMessage(report);
+
 
             // Add the rest of the entries to database if the file upload is successful
-            var concert = new LocalConcert()
-            {
-                Artists = artists,
-                // FlyerUrl = upload.FilePath,
-                TimeStart = dateStart,
-                TimeEnd = dateEnd,
-                VenueName = venue
-            };
             ClaimsPrincipal currentUser = this.User;
             string currentUserId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
-            Insert.CreateQueuedDate(concert, currentUserId);
+            Insert.CreateQueuedDate(houseShow, currentUserId);
 
             return Ok();
         }

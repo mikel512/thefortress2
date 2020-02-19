@@ -52,10 +52,23 @@ namespace DataAccessLibrary.Logic
 
             return _dataAccess.ExecuteProcedure("InsertConcertToApprovalQueue", null,
                 Pairing.Of("@userId", userId),
-                Pairing.Of("@artists", localConcert.Artists),
+                Pairing.Of("@event", localConcert.Artists),
                 Pairing.Of("@venueName", localConcert.VenueName),
                 Pairing.Of("@timeStart", localConcert.TimeStart),
                 Pairing.Of("@flyerurl", localConcert.FlyerUrl),
+                Pairing.Of("@timeend", (nullTimeEnd) ? null : end));
+        }
+        public int CreateQueuedDate(HouseShow houseShow, string userId)
+        {
+            bool nullTimeEnd = houseShow.TimeEnd == DateTime.MinValue;
+            var end = houseShow.TimeEnd;
+
+            return _dataAccess.ExecuteProcedure("InsertShowToApprovalQueue", null,
+                Pairing.Of("@userId", userId),
+                Pairing.Of("@event", houseShow.Artists),
+                Pairing.Of("@venueName", houseShow.VenueName),
+                Pairing.Of("@timeStart", houseShow.TimeStart),
+                Pairing.Of("@flyerurl", houseShow.FlyerUrl),
                 Pairing.Of("@timeend", (nullTimeEnd) ? null : end));
         }
 

@@ -17,6 +17,7 @@ namespace TheFortress.Controllers
         // GET
         public IActionResult HouseShows()
         {
+            // TODO use correct read function for house shows
             var shows = Read.ApprovedShowsByMonth();
             ViewData["HouseShows"] = shows;
             return View();

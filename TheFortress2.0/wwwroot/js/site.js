@@ -224,9 +224,16 @@ function showConcertPagination(pagination_id) {
 }
 
 
-// file upload
+// file upload for house show
 $("#showUploadButton").click(function () {
-    let file = document.getElementById("FlyerUrlUpload");
+    $('#addToApprovalForm').hide();
+    $('#loadingSkull').show();
+    warningToast.fire({
+        title: 'Verifying file; please wait. show',
+        position: 'center',
+        timer: 1800,
+    });
+    let file = document.getElementById("FlyerUrlUpload-show");
     let formData = new FormData();
 
     formData.append("file", file.files[0]);
@@ -240,7 +247,7 @@ $("#showUploadButton").click(function () {
 
     console.log(formData);
     $.ajax({
-        url: "/Upload/UploadConcertAjax",
+        url: "/Upload/UploadShowAjax",
         type: "POST",
         processData: false,
         contentType: false,
@@ -248,7 +255,7 @@ $("#showUploadButton").click(function () {
         success: function () {
             //alert("File uploaded!");
             successToast.fire({
-                title: 'Concert added to queue successfully. Redirecting to Home page.',
+                title: 'Show added to queue successfully. Redirecting to Home page.',
                 position: 'center',
                 timer: 2000,
                 onClose: () => {
@@ -275,7 +282,7 @@ $("#concertUploadButton").click(function () {
     warningToast.fire({
         title: 'Verifying file; please wait.',
         position: 'center',
-        timer: 1500,
+        timer: 1800,
     });
     $('#addToApprovalForm').hide();
     $('#loadingSkull').show();

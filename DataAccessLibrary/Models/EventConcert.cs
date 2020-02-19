@@ -13,6 +13,8 @@ namespace DataAccessLibrary.Models
         [Display(Name = "Flyer URL")]
         public string FlyerUrl { get; set; }
 
+        // TODO implement flatpickr as an alterative to a datetime pickr
+        // TODO adjust validation so DateTime objects without a time field produce ajax error
         [Required]
         [Display(Name = "Date and Start Time")]
         public DateTime TimeStart { get; set; }
