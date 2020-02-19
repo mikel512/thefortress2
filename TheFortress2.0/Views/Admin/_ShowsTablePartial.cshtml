@@ -31,17 +31,18 @@
                             <td>@item.HouseShowId</td>
                             <td>@item.Artists</td>
                             <td>@item.TimeStart</td>
-                            <td>@item.HouseName</td>
+                            <td>@item.VenueName</td>
                             @* TODO change isapproved to checkbox, update database onclick w/ ajax *@
                             <td>@item.IsApproved</td>
                             <td>
-                                <form asp-action="DeleteConcertAjax" asp-controller="Admin"
+                                <form asp-action="DeleteShowAjax" asp-controller="Admin"
                                       data-ajax="true"
                                       data-ajax-method="GET"
                                       asp-route-eventConcertId="@item.EventConcertId"
-                                      asp-route-localConcertId="@item.LocalConcertId"
-                                      data-ajax-success="deleteConcertSuccess"
-                                   >
+                                      asp-route-showId="@item.HouseShowId"
+                                      data-ajax-success="deleteTableRowSuccess"
+                                      data-ajax-failure="genericFailure">
+                                   
                                     <button type="submit" class="btn badge-danger text-light" href="#">Delete</button>
                                 </form>
                             </td>

@@ -19,50 +19,17 @@
     $('#addCodeModal').modal('toggle');
     $('#addCodeForm').trigger('reset');
 };
-addCodeFailure = function (response) {
-    errorToast.fire({
-        title: 'Something went wrong.',
-        position: 'top-end',
-        timer: 3000
-    })
-};
 
-queueRemoveSuccess = function (response) {
-    const element = document.getElementById(response["0"]);
-    element.parentNode.removeChild(element);
-    // TODO insert row to upcoming local shows table
-    successToast.fire({
-        title: 'Queue item removed',
-        position: 'top-end',
-        timer: 3000
-    })
-};
 queueApproveSuccess = function (response) {
     const element = document.getElementById(response["0"]);
     element.parentNode.removeChild(element);
+    // TODO insert row to upcoming local shows table
     successToast.fire({
         title: 'Queue item approved successfully',
         position: 'top-end',
         timer: 3000
     })
 };
-deleteCodeSuccess = function (response) {
-    const element = document.getElementById(response["0"]);
-    element.parentNode.removeChild(element);
-    successToast.fire({
-        title: 'Concert deleted successfully',
-        position: 'top-end',
-        timer: 3000
-    })
-};
-deleteCodeFailure = function (response) {
-    errorToast.fire({
-        title: 'Something went wrong.',
-        position: 'top-end',
-        timer: 3000
-    })
-};
-
 addConcertSuccess = function (response) {
     let concerts = {
         0: response["1"],
@@ -87,27 +54,14 @@ addConcertSuccess = function (response) {
     $('#addConcertModal').modal('toggle');
     $('#addConcertForm').trigger('reset');
 };
-addConcertFailure = function (response) {
-    errorToast.fire({
-        title: 'Something went wrong.',
-        position: 'top-end',
-        timer: 3000
-    })
-};
 
-
-deleteConcertSuccess = function (response) {
+deleteTableRowSuccess = function (response) {
+    // the element to delete
     const element = document.getElementById(response["0"]);
     element.parentNode.removeChild(element);
+    // notify success
     successToast.fire({
-        title: 'Code deleted successfully',
-        position: 'top-end',
-        timer: 3000
-    })
-};
-deleteConcertFailure = function (response) {
-    errorToast.fire({
-        title: 'Something went wrong.',
+        title: 'Deleted successfully',
         position: 'top-end',
         timer: 3000
     })

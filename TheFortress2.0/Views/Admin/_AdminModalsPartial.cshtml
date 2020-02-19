@@ -13,7 +13,7 @@
                   data-ajax="true"
                   data-ajax-method="POST"
                   data-ajax-success="addConcertSuccess"
-                  data-ajax-failure="addConcertFailure">
+                  data-ajax-failure="genericFailure">
 
                 <div class="modal-body">
                     @await Html.PartialAsync("_LocalConcertForm.cshtml")
@@ -43,7 +43,7 @@
                   data-ajax="true"
                   data-ajax-method="POST"
                   data-ajax-success="addCodeSuccess"
-                  data-ajax-failure="addCodeFailure">
+                  data-ajax-failure="genericFailure">
 
                 <div class="modal-body">
                     @await Html.PartialAsync("_CodeForm.cshtml")

@@ -50,8 +50,8 @@
                                               data-ajax="true"
                                               data-ajax-method="GET"
                                               asp-route-codeId="@item.TrustedCodeId"
-                                              data-ajax-success="deleteCodeSuccess"
-                                              data-ajax-failure="deleteCodeFailure">
+                                              data-ajax-success="deleteTableRowSuccess"
+                                              data-ajax-failure="genericFailure">
                                             <button type="submit" class="btn badge-danger text-light" href="#">Delete</button>
                                         </form>
                                     </td>
@@ -103,7 +103,7 @@
                                         <a asp-action="DeleteQueueEntryAjax" asp-controller="Admin"
                                            asp-route-queueId="@item.QueueId"
                                            data-ajax="true"
-                                           data-ajax-success="queueRemoveSuccess"
+                                           data-ajax-success="deleteTableRowSuccess"
                                            data-ajax-failure="genericFailure"
                                            class="btn btn-danger">
                                             Delete

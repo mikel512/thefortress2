@@ -115,6 +115,12 @@ namespace TheFortress.Controllers
             Delete.DeleteConcert(localConcertId);
             return Json(new Dictionary<string, string>() {["0"] = localConcertId.ToString()});
         }
+        [HttpGet]
+        public IActionResult DeleteShowAjax(int showId)
+        {
+            Delete.DeleteConcert(showId);
+            return Json(new Dictionary<string, string>() {["0"] = showId.ToString()});
+        }
 
         [HttpGet]
         public IActionResult DeleteCodeAjax(int codeId)

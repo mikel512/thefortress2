@@ -16,6 +16,11 @@ namespace DataAccessLibrary.Logic
             return _dataAccess.ExecuteProcedure("DeleteLocalConcert", "", 
                 Pairing.Of("@concertId", localConcertId));
         }
+        public int DeleteShow(int showId)
+        {
+            return _dataAccess.ExecuteProcedure("DeleteHouseShow", "", 
+                Pairing.Of("@houseshowId", showId));
+        }
         public int DeleteCode(int codeId)
         {
             return _dataAccess.ExecuteProcedure("DeleteTrustedCode", "",

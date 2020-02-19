@@ -40,8 +40,9 @@
                                       data-ajax-method="GET"
                                       asp-route-eventConcertId="@item.EventConcertId"
                                       asp-route-localConcertId="@item.LocalConcertId"
-                                      data-ajax-success="deleteConcertSuccess"
-                                   >
+                                      data-ajax-success="deleteTableRowSuccess"
+                                      data-ajax-failure="genericFailure">
+                                   
                                     <button type="submit" class="btn badge-danger text-light" href="#">Delete</button>
                                 </form>
                             </td>
