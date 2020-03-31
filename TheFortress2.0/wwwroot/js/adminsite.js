@@ -39,7 +39,7 @@ addConcertSuccess = function (response) {
         4: $('#IsApproved').val(),
     };
 
-    const param = ['eventConcertId=' + response["0"], 'localConcertId=' + response["1"]];
+    const param = ['localConcertId=' + response["1"]];
 
     const deleteForm = createDeleteBtn("Admin", "DeleteConcertAJAX", param, 'deleteConcertSuccess',);
 
@@ -85,6 +85,11 @@ genericFailure = function (response) {
     })
 
 };
+const warningToast = Swal.mixin({
+    toast: true,
+    icon: 'warning',
+    showConfirmButton: false,
+});
 const successToast = Swal.mixin({
     toast: true,
     icon: 'success',
@@ -159,4 +164,14 @@ function addTableRows(tableId, data, deleteBtn) {
         const newText = document.createTextNode(data[i]);
         cell.appendChild(newText);
     }
+}
+
+function loadingSkullModal() {
+    $('#modalForm').hide();
+    $('#loadingSkull').show();
+    warningToast.fire({
+        title: "Uploading file",
+        position: "center",
+        timer: 1800
+    });
 }

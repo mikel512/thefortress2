@@ -13,6 +13,7 @@
                 <input asp-for="VenueName" class="form-control" />
                 <span asp-validation-for="VenueName" class="text-danger"></span>
             </div>
+            @* TODO implement flatpickr as an alterative to a datetime pickr *@
             <div class="form-group">
                 <label asp-for="TimeStart"></label>
                 <input asp-for="TimeStart" class="form-control" />
@@ -24,9 +25,9 @@
                 <span asp-validation-for="TimeEnd" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="FlyerUrl"></label>
-                <input asp-for="FlyerUrl" class="form-control" />
-                <span asp-validation-for="FlyerUrl" class="text-danger"></span>
+                <label asp-for="FlyerFile"></label>
+                <input asp-for="FlyerFile" class="form-control" />
+                <span asp-validation-for="FlyerFile" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <div class="checkbox">

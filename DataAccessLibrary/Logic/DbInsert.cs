@@ -15,14 +15,13 @@ namespace DataAccessLibrary.Logic
             _dataAccess = dataAccess;
         }
         // Admin create concert
-        public Dictionary<string, string> CreateConcertDate(LocalConcert localConcert)
+        public int CreateConcertDate(LocalConcert localConcert)
         {
             bool nullTimeEnd = localConcert.TimeEnd == DateTime.MinValue;
             var end = localConcert.TimeEnd;
-            string[] output = new[] {"@eventId", "@concertId"};
             
             // 0 : parent row Id(event), 1: child row id (concert)
-            return _dataAccess.ExecuteProcedureJson("InsertLocalConcert", output,
+            return _dataAccess.ExecuteProcedure("InsertLocalConcert", "@concertId",
                 Pairing.Of("@artists", localConcert.Artists),
                 Pairing.Of("@flyerurl", localConcert.FlyerUrl),
                 Pairing.Of("@timestart", localConcert.TimeStart),

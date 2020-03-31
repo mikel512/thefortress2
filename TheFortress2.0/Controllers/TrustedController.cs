@@ -1,11 +1,13 @@
 using DataAccessLibrary.FileStoreAccess;
 using DataAccessLibrary.SqlDataAccess;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace TheFortress.Controllers
 {
+    [Authorize(Roles = "Trusted, Administrator")]
     public class TrustedController : FortressController<TrustedController>
     {
         public TrustedController(ILogger<TrustedController> logger, IStorageService storageService,
@@ -17,9 +19,7 @@ namespace TheFortress.Controllers
         // GET
         public IActionResult HouseShows()
         {
-            // TODO use correct read function for house shows
-            var shows = Read.ApprovedShowsByMonth();
-            ViewData["HouseShows"] = shows;
+            ViewData["HouseShows"] = Read.ApprovedShowsByMonth();
             return View();
         }
 

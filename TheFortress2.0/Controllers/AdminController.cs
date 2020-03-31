@@ -17,7 +17,8 @@ namespace TheFortress.Controllers
     public class AdminController : FortressController<AdminController>
     {
         public AdminController(ILogger<AdminController> logger, UserManager<IdentityUser> userManager,IStorageService storageService,
-            ApplicationDbContext applicationDbContext, RoleManager<IdentityRole> roleManager) : base(logger,
+            ApplicationDbContext applicationDbContext, RoleManager<IdentityRole> roleManager
+            ) : base(logger,
             userManager, storageService ,applicationDbContext, roleManager)
         {
         }
@@ -60,10 +61,12 @@ namespace TheFortress.Controllers
         #region AjaxActions
 
         [HttpPost]
-        public IActionResult AddConcertAjax(LocalConcert localConcert)
+        public async Task<IActionResult> AddConcertAjax(LocalConcert localConcert)
         {
-            // 0 : parent row Id(event), 1: child row id (concert)
+            localConcert.FlyerUrl = await _storageService.StoreImageFile(localConcert.FlyerFile);
             var dictionary = Insert.CreateConcertDate(localConcert);
+            
+            // 0 : parent row Id(event), 1: child row id (concert)
             return Json(dictionary);
         }
 
@@ -118,7 +121,7 @@ namespace TheFortress.Controllers
         [HttpGet]
         public IActionResult DeleteShowAjax(int showId)
         {
-            Delete.DeleteConcert(showId);
+            Delete.DeleteShow(showId);
             return Json(new Dictionary<string, string>() {["0"] = showId.ToString()});
         }
 

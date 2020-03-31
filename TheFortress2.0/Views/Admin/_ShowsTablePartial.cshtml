@@ -38,7 +38,6 @@
                                 <form asp-action="DeleteShowAjax" asp-controller="Admin"
                                       data-ajax="true"
                                       data-ajax-method="GET"
-                                      asp-route-eventConcertId="@item.EventConcertId"
                                       asp-route-showId="@item.HouseShowId"
                                       data-ajax-success="deleteTableRowSuccess"
                                       data-ajax-failure="genericFailure">

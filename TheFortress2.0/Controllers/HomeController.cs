@@ -26,15 +26,6 @@ namespace TheFortress.Controllers
         {
         }
 
-        // public HomeController(ILogger<HomeController> logger, UserManager<IdentityUser> userManager, ApplicationDbContext applicationDbContext)
-        // {
-        //     _logger = logger;
-        //     _userManager = userManager;
-        //     _applicationDb = applicationDbContext;
-        //     read = new DataRead(applicationDbContext);
-        //     insert = new DataInsert(applicationDbContext);
-        // }
-
         public IActionResult Index()
         {
             List<string> imgArray = new List<string>();
@@ -44,11 +35,7 @@ namespace TheFortress.Controllers
             }
 
             ViewData["imgArray"] = imgArray;
-            // ViewData["concertDictionary"] = Read.ApprovedConcertsByMonth();
-
-            //var scan = new VirusScan();
-            //scan.TestScan();
-
+            
             return View();
         }
 
@@ -75,15 +62,6 @@ namespace TheFortress.Controllers
         {
             return View();
         }
-
-        // public IActionResult Comments(int eventid)
-        // {
-        //     var tree = new CommentTree();
-        //     var comments = tree.GetEventComments(eventid);
-        //     ViewData["Comments"] = comments;
-        //     ViewData["EventId"] = eventid;
-        //     return View();
-        // }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

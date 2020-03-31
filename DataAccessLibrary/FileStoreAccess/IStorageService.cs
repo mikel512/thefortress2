@@ -6,8 +6,7 @@ namespace DataAccessLibrary.FileStoreAccess
 {
     public interface IStorageService
     {
-        Task<string> StoreImageFile(IFormFile image, bool safe);
+        Task<string> StoreImageFile(IFormFile image);
         Task<List<string>> GetAllImgsFromBlob();
-        void AddQueueMessage(string jsonReport);
     }
 }

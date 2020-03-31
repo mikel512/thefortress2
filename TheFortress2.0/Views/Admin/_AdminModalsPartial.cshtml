@@ -10,13 +10,19 @@
             @* TODO change event forms to allow file upload *@
             <form asp-action="AddConcertAjax" asp-controller="Admin" 
                   id="addConcertForm"
+                  enctype="multipart/form-data"
                   data-ajax="true"
                   data-ajax-method="POST"
+                  data-ajax-begin="loadingSkullModal"
                   data-ajax-success="addConcertSuccess"
                   data-ajax-failure="genericFailure">
 
                 <div class="modal-body">
-                    @await Html.PartialAsync("_LocalConcertForm.cshtml")
+                    <div id="modalForm">
+                        @await Html.PartialAsync("_LocalConcertForm.cshtml")
+                    </div>
+                    <img src="~/img/icons/loading_skull.gif" 
+                         class="col-10" id="loadingSkull" alt="" style="display: none"/>
                 </div>
 
                 <div class="modal-footer">
