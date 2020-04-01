@@ -6,6 +6,7 @@ using DataAccessLibrary.Models;
 
 namespace DataAccessLibrary.Utilities
 {
+    // TODO move CommentTree class to root project
     public class CommentTree
     {
         private Dictionary<int?, List<CommentModel>> _commentDict;

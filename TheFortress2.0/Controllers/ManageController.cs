@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAccessLibrary.FileStoreAccess;
 using DataAccessLibrary.Models;
+using DataAccessLibrary.Security;
 using DataAccessLibrary.SqlDataAccess;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -23,13 +24,16 @@ namespace TheFortress.Controllers
     public class ManageController : FortressController<ManageController>
     {
         private readonly SignInManager<IdentityUser> _signInManager;
+        private IEmailService _emailService;
         public ManageController(ILogger<ManageController> logger, IStorageService storageService,
             UserManager<IdentityUser> userManager, 
             ApplicationDbContext applicationDbContext, 
             RoleManager<IdentityRole> roleManager,
+            IEmailService emailService,
             SignInManager<IdentityUser> signInManager) : base(logger, userManager, storageService,applicationDbContext, roleManager)
         {
             _signInManager = signInManager;
+            _emailService = emailService;
         }
         // private readonly UserManager<IdentityUser> _userManager;
         // private readonly ILogger<ManageController> _logger;
@@ -89,7 +93,7 @@ namespace TheFortress.Controllers
                     // Add user to role
                     _userManager.AddToRoleAsync(user, (input.RegisterModel.IsArtist) ? "Artist" : "User").Wait();
 
-                    //_logger.LogInformation("User created a new account with password.");
+                    _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));

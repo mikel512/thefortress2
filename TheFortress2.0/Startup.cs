@@ -46,6 +46,7 @@ namespace TheFortress
             services.AddTransient<UserManager<IdentityUser>>();
             services.AddTransient<IDataAccess, DataAccess>();
             services.AddTransient<IStorageService, StorageService>();
+            services.AddTransient<IEmailService, EmailService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

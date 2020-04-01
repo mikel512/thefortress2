@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace TheFortress.Controllers
 {
+    // TODO move models to root project
     public class FortressController<T> : Controller
     {
         protected readonly DataAccess _dataAccess;
