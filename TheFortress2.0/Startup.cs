@@ -1,16 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Cloudmersive.APIClient.NET.VirusScan.Model;
 using DataAccessLibrary.FileStoreAccess;
 using DataAccessLibrary.Security;
 using DataAccessLibrary.SqlDataAccess;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using TheFortress.Data;
@@ -47,6 +40,7 @@ namespace TheFortress
             services.AddTransient<IDataAccess, DataAccess>();
             services.AddTransient<IStorageService, StorageService>();
             services.AddTransient<IEmailService, EmailService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

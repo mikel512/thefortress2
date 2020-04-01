@@ -107,7 +107,7 @@ namespace TheFortress.Controllers
                         protocol: Request.Scheme);
 
                     // Send confirmation email
-                    _emailService.SendEmail("admin@thefortress.me",  email, "Confirm your email",
+                    _emailService.SendMail("admin@thefortress.me", "Admin",  email, "Confirm your email",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)

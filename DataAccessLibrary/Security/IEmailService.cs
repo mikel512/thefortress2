@@ -1,7 +1,10 @@
-﻿namespace DataAccessLibrary.Security
+﻿using System.Threading.Tasks;
+using RestSharp;
+
+namespace DataAccessLibrary.Security
 {
     public interface IEmailService
     {
-        string SendEmail(string sender, string recipient, string subject, string body);
+        IRestResponse SendMail(string from, string sender, string to, string subject, string body);
     }
 }

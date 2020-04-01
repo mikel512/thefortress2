@@ -33,7 +33,7 @@ namespace TheFortress.Controllers
             {
                 imgArray.Add(s);
             }
-
+            
             ViewData["imgArray"] = imgArray;
             
             return View();
@@ -105,6 +105,5 @@ namespace TheFortress.Controllers
             });
         }
         #endregion
-
     }
 }
