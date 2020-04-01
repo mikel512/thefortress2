@@ -36,20 +36,12 @@ namespace TheFortress.Controllers
             _signInManager = signInManager;
             _emailService = emailService;
         }
-        // private readonly UserManager<IdentityUser> _userManager;
-        // private readonly ILogger<ManageController> _logger;
-        // private readonly IEmailSender _emailSender;
-        // private readonly DataRead _read = new DataRead();
-        // public ManageController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager,
-        //     ILogger<ManageController> logger, IEmailSender emailSender)
-        // {
-        //     _signInManager = signInManager;
-        //     _userManager = userManager;
-        //     _logger = logger;
-        //     _emailSender = emailSender;
-        // }
 
         public IActionResult TrustedPass()
+        {
+            return View();
+        }
+        public IActionResult CheckEmail()
         {
             return View();
         }
@@ -112,7 +104,7 @@ namespace TheFortress.Controllers
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = input.RegisterModel.Email });
+                        return Ok();
                     }
                     else
                     {
