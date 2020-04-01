@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using DataAccessLibrary.FileStoreAccess;
 using DataAccessLibrary.Models;
@@ -86,7 +87,8 @@ namespace TheFortress.Controllers
             //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = input.RegisterModel.UserNameReg, Email = input.RegisterModel.Email };
+                string email = input.RegisterModel.Email;
+                var user = new IdentityUser { UserName = input.RegisterModel.UserNameReg, Email = email };
                 var result = await _userManager.CreateAsync(user, input.RegisterModel.PasswordReg);
                 if (result.Succeeded)
                 {
@@ -95,6 +97,7 @@ namespace TheFortress.Controllers
 
                     _logger.LogInformation("User created a new account with password.");
 
+                    // Make the confirmation code
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
@@ -103,9 +106,9 @@ namespace TheFortress.Controllers
                         values: new { area = "Identity", userId = user.Id, code = code },
                         protocol: Request.Scheme);
 
-                    // TODO setup email confirmation service; use MailGun
-                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    // Send confirmation email
+                    _emailService.SendEmail("admin@thefortress.me",  email, "Confirm your email",
+                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
