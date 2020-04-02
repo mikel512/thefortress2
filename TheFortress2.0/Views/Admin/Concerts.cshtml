@@ -1,7 +1,7 @@
 ﻿@using DataAccessLibrary.Models
 @{
     var concertList = (List<LocalConcert>)ViewData["Concerts"];
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    Layout = "_AdminLayout";
 }
 @if (concertList.Count == 0)
 {

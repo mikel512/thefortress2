@@ -26,7 +26,9 @@ namespace TheFortress.Controllers
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private IEmailService _emailService;
-        public ManageController(ILogger<ManageController> logger, IStorageService storageService,
+        
+        public ManageController(ILogger<ManageController> logger, 
+            IStorageService storageService,
             UserManager<IdentityUser> userManager, 
             ApplicationDbContext applicationDbContext, 
             RoleManager<IdentityRole> roleManager,
@@ -41,9 +43,31 @@ namespace TheFortress.Controllers
         {
             return View();
         }
+        [AllowAnonymous]
         public IActionResult CheckEmail()
         {
             return View();
+        }
+        [AllowAnonymous]
+        public async Task<IActionResult> ConfirmEmail(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                _logger.LogInformation("User ID or code is null");
+                return RedirectToPage("Error");
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                _logger.LogInformation("User not found");
+                return NotFound($"Unable to load user with ID '{userId}'.");
+            }
+
+            code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+            _logger.LogInformation("User has confirmed email");
+            return RedirectToAction("Index", "Home");
         }
 
         #region Ajax Calls
@@ -92,15 +116,15 @@ namespace TheFortress.Controllers
                     // Make the confirmation code
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { area = "Identity", userId = user.Id, code = code },
+                    var callbackUrl = Url.Action(
+                        "ConfirmEmail",
+                        "Manage",
+                        values: new { userId = user.Id, code = code },
                         protocol: Request.Scheme);
 
                     // Send confirmation email
                     _emailService.SendMail("admin@thefortress.me", "Admin",  email, "Confirm your email",
-                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    $"Please confirm your account by <a href='{callbackUrl}'>clicking here</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

@@ -128,6 +128,17 @@ loginFailure = function (xhr) {
         }
     });
 };
+registrationSuccess = function (response) {
+    successToast.fire({
+        title: 'Registration successful.',
+        position: 'top-end',
+        timer: 2000,
+        onClose: () => {
+            sleep(100);
+            window.location.href = "/Manage/CheckEmail"
+        }
+    });
+};
 
 commentSuccess = function (response) {
     var commentid = response["0"];

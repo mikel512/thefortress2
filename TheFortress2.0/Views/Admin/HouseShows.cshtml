@@ -1,7 +1,7 @@
 ﻿@using DataAccessLibrary.Models
 @{
     var showList = (List<HouseShow>) ViewData["Shows"];
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    Layout = "_AdminLayout";
 }
 @if (showList.Count == 0)
 {
