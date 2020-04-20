@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace DataAccessLibrary.FileStoreAccess
+namespace DataAccessLibrary.Services
 {
     public interface IStorageService
     {

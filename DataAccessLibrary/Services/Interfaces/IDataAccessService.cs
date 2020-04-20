@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
-namespace DataAccessLibrary.SqlDataAccess
+namespace DataAccessLibrary.Services
 {
-    public interface IDataAccess
+    public interface IDataAccessService
     {
         string ConnectionString { get; set; }
         List<T> ExecuteProcedure<T>(string procedure);

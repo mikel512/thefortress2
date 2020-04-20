@@ -1,5 +1,12 @@
 ﻿@model DataAccessLibrary.Models.LocalConcert
-<form>
+<form asp-action="AddToApprovalUser" asp-controller="Home"
+      id="addConcertForm"
+      enctype="multipart/form-data"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-begin="loadingSkullModal"
+      data-ajax-success="addConcertSuccess"
+      data-ajax-failure="genericFailure">
     <div class="row">
         <div class="col-12">
             <div asp-validation-summary="All" class="text-danger"></div>
@@ -23,18 +30,12 @@
                 <input asp-for="TimeEnd" class="form-control"/>
                 <span asp-validation-for="TimeEnd" class="text-danger"></span>
             </div>
-            @*<div class="form-group">
-                <label class="text-light" asp-for="FlyerUrl"></label>
-                <input asp-for="FlyerUrl" class="form-control" />
-                <span asp-validation-for="FlyerUrl" class="text-danger"></span>
-            </div>*@
             <div class="form-group">
-                <label class="text-light" asp-for="FlyerUrl"></label>
-                <input asp-for="FlyerUrl" class="form-control" accept=".jpg, .jpeg"/>
-                <span asp-validation-for="FlyerUrl" class="text-danger"></span>
+                <label class="text-light" asp-for="FlyerFile"></label>
+                <input asp-for="FlyerFile" class="form-control" accept=".jpg, .jpeg"/>
+                <span asp-validation-for="FlyerFile" class="text-danger"></span>
             </div>
             <div class="form-group">
-                
                 <label class="text-light" asp-for="UserNotes"></label>
                 <textarea asp-for="UserNotes" class="form-control"  rows="4"></textarea>
                 <span asp-validation-for="UserNotes" class="text-danger"></span>
@@ -44,7 +45,7 @@
     <div class="row pt-2">
         <div class="col-9"></div>
         <div class="col-3">
-            <button id="fileUploadButton" class="btn btn-primary text-nowrap">Add Date</button>
+            <button class="btn btn-primary text-nowrap">Add Date</button>
             <output form="uploadForm" name="result"></output>
         </div>
     </div>

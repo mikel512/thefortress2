@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DataAccessLibrary.FileStoreAccess;
 using Microsoft.AspNetCore.Mvc;
 using DataAccessLibrary.Models;
+using DataAccessLibrary.Services;
 using DataAccessLibrary.SqlDataAccess;
 using DataAccessLibrary.Utilities;
 using Microsoft.AspNetCore.Authorization;
@@ -26,35 +26,35 @@ namespace TheFortress.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            ViewData["LocalConcerts"] = Read.GetApprovedLocalConcerts();
-            ViewData["HouseShows"] = Read.GetApprovedHouseShows();
-            ViewData["Codes"] = Read.GetAllTrustedCodes();
-            ViewData["ConcertQueue"] = Read.GetQueueDash();
+            ViewData["LocalConcerts"] = _dbAccessLogic.GetApprovedLocalConcerts();
+            ViewData["HouseShows"] = _dbAccessLogic.GetApprovedHouseShows();
+            ViewData["Codes"] = _dbAccessLogic.GetAllTrustedCodes();
+            ViewData["ConcertQueue"] = _dbAccessLogic.GetQueueDash();
             return View();
         }
 
         public IActionResult Concerts()
         {
-            ViewData["Concerts"] = Read.GetLocalConcerts();
+            ViewData["Concerts"] = _dbAccessLogic.GetLocalConcerts();
             return View();
         }
 
         public IActionResult HouseShows()
         {
-            ViewData["Shows"] = Read.GetHouseShows();
+            ViewData["Shows"] = _dbAccessLogic.GetHouseShows();
             return View();
         }
 
         public IActionResult Users()
         {
-            ViewData["Users"] = Read.GetUsersWithRoles();
-            ViewData["Roles"] = Read.GetRoles();
+            ViewData["Users"] = _dbAccessLogic.GetUsersWithRoles();
+            ViewData["Roles"] = _dbAccessLogic.GetRoles();
             return View();
         }
 
         public IActionResult Inbox()
         {
-            ViewData["Messages"] = Read.GetAdminMessages();
+            ViewData["Messages"] = _dbAccessLogic.GetAdminMessages();
             return View();
         }
 
@@ -63,27 +63,37 @@ namespace TheFortress.Controllers
         [HttpPost]
         public async Task<IActionResult> AddConcertAjax(LocalConcert localConcert)
         {
-            localConcert.FlyerUrl = await _storageService.StoreImageFile(localConcert.FlyerFile);
-            var dictionary = Insert.CreateConcertDate(localConcert);
-            
-            // 0 : parent row Id(event), 1: child row id (concert)
-            return Json(dictionary);
+            if (ModelState.IsValid)
+            {
+                localConcert.FlyerUrl = await _storageService.StoreImageFile(localConcert.FlyerFile);
+                var dictionary = _dbAccessLogic.CreateConcertDate(localConcert);
+                
+                // 0 : parent row Id(event), 1: child row id (concert)
+                return Json(dictionary);
+            }
+
+            return BadRequest();
         }
 
         [HttpPost]
         public IActionResult AddCodeAjax(TrustedCode trustedCode)
         {
             int codeId = 0;
-            if (!trustedCode.MaxTimesUsed.HasValue)
+            if (ModelState.IsValid)
             {
-                codeId = Insert.CreateTrustedCode(trustedCode.CodeString);
-            }
-            else
-            {
-                codeId = Insert.CreateTrustedCode(trustedCode.CodeString, trustedCode.MaxTimesUsed);
+                if (!trustedCode.MaxTimesUsed.HasValue)
+                {
+                    codeId = _dbAccessLogic.CreateTrustedCode(trustedCode.CodeString);
+                }
+                else
+                {
+                    codeId = _dbAccessLogic.CreateTrustedCode(trustedCode.CodeString, trustedCode.MaxTimesUsed);
+                }
+
+                return Json(new Dictionary<string, string>() {["0"] = codeId.ToString()});
             }
 
-            return Json(new Dictionary<string, string>() {["0"] = codeId.ToString()});
+            return BadRequest();
         }
 
         [HttpPost]
@@ -100,43 +110,63 @@ namespace TheFortress.Controllers
             return RedirectToAction("Users");
         }
 
-        public IActionResult ApproveQueueItemAjax(int queueId)
+        public IActionResult ApproveQueueItemAjax(int itemId)
         {
-            if (ModelState.IsValid)
+            if (itemId > 0 && !itemId.Equals(null))
             {
-                var e = _dataAccess.ExecuteProcedure("ApproveQueueItem", "",
-                    Pairing.Of("@queueId", queueId));
-                return Json(new Dictionary<string, string>() {["0"] = queueId.ToString()});
+                var e = _dataAccessService.ExecuteProcedure("ApproveQueueItem", "",
+                    Pairing.Of("@queueId", itemId));
+                return Json(new Dictionary<string, string>() {["0"] = itemId.ToString()});
             }
 
-            return BadRequest(ModelState);
+            return BadRequest();
         }
 
         [HttpGet]
-        public IActionResult DeleteConcertAjax(int localConcertId)
+        public IActionResult DeleteConcertAjax(int itemId)
         {
-            Delete.DeleteConcert(localConcertId);
-            return Json(new Dictionary<string, string>() {["0"] = localConcertId.ToString()});
+            if (itemId > 0 && !itemId.Equals(null))
+            {
+                _dbAccessLogic.DeleteConcert(itemId);
+                return Json(new Dictionary<string, string>() {["0"] = itemId.ToString()});
+            }
+
+            return BadRequest();
         }
         [HttpGet]
-        public IActionResult DeleteShowAjax(int showId)
+        public IActionResult DeleteShowAjax(int itemId)
         {
-            Delete.DeleteShow(showId);
-            return Json(new Dictionary<string, string>() {["0"] = showId.ToString()});
+            if (itemId > 0 && !itemId.Equals(null))
+            {
+                _dbAccessLogic.DeleteShow(itemId);
+                return Json(new Dictionary<string, string>() {["0"] = itemId.ToString()});
+            }
+            
+            return BadRequest();
         }
 
         [HttpGet]
-        public IActionResult DeleteCodeAjax(int codeId)
+        public IActionResult DeleteCodeAjax(int itemId)
         {
-            Delete.DeleteCode(codeId);
-            return Json(new Dictionary<string, string>() {["0"] = codeId.ToString()});
+            if (itemId > 0 && !itemId.Equals(null))
+            {
+                _dbAccessLogic.DeleteCode(itemId);
+                return Json(new Dictionary<string, string>() {["0"] = itemId.ToString()});
+            }
+            
+            return BadRequest();
         }
 
         [HttpGet]
-        public IActionResult DeleteQueueEntryAjax(int queueId)
+        public IActionResult DeleteQueueEntryAjax(int itemId)
         {
-            Delete.DeleteQueueEntry(queueId);
-            return Json(new Dictionary<string, string>() {["0"] = queueId.ToString()});
+            if (itemId > 0 && !itemId.Equals(null))
+            {
+                _dbAccessLogic.DeleteQueueEntry(itemId);
+                return Json(new Dictionary<string, string>() {["0"] = itemId.ToString()});
+            }
+
+            return BadRequest();
         }
 
         #endregion

@@ -1,21 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using VirusTotalNet;
-using VirusTotalNet.Objects;
-using VirusTotalNet.ResponseCodes;
-using VirusTotalNet.Results;
-using Newtonsoft.Json;
 using Cloudmersive.APIClient.NET.VirusScan.Api;
 using Cloudmersive.APIClient.NET.VirusScan.Client;
 using Cloudmersive.APIClient.NET.VirusScan.Model;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using VirusTotalNet;
+using VirusTotalNet.ResponseCodes;
+using VirusTotalNet.Results;
 
-namespace DataAccessLibrary.Security
+namespace DataAccessLibrary.Services
 {
     public class VirusScanService : IVirusScanService
     {

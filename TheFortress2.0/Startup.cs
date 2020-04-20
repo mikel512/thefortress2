@@ -1,5 +1,5 @@
-using DataAccessLibrary.FileStoreAccess;
-using DataAccessLibrary.Security;
+using System;
+using DataAccessLibrary.Services;
 using DataAccessLibrary.SqlDataAccess;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -34,10 +34,16 @@ namespace TheFortress
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.Cookie.Expiration = TimeSpan.FromHours(1);
+                options.SlidingExpiration = false;
+            });
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddTransient<UserManager<IdentityUser>>();
-            services.AddTransient<IDataAccess, DataAccess>();
+            services.AddTransient<IDataAccessService, DataAccessService>();
             services.AddTransient<IStorageService, StorageService>();
             services.AddTransient<IEmailService, EmailService>();
 

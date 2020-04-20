@@ -5,9 +5,8 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using DataAccessLibrary.FileStoreAccess;
 using DataAccessLibrary.Models;
-using DataAccessLibrary.Security;
+using DataAccessLibrary.Services;
 using DataAccessLibrary.SqlDataAccess;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -43,11 +42,15 @@ namespace TheFortress.Controllers
         {
             return View();
         }
+        
         [AllowAnonymous]
         public IActionResult CheckEmail()
         {
             return View();
         }
+        
+        #region Ajax Calls
+        
         [AllowAnonymous]
         public async Task<IActionResult> ConfirmEmail(string userId, string code)
         {
@@ -70,19 +73,20 @@ namespace TheFortress.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        #region Ajax Calls
-
         public async Task<IActionResult> UseTrustedPassAjax(TrustedCode trustedCode)
         {
             ClaimsPrincipal currentUser = this.User;
             string currentUserId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
-            
-            int result = Read.UseTrustedCode(trustedCode.CodeString.ToUpper(), currentUserId);
-            if (result > 0)
+
+            if (ModelState.IsValid)
             {
-                IdentityUser user = await _userManager.GetUserAsync(currentUser);
-                await _userManager.AddToRoleAsync(user, "Trusted");
-                return Ok();
+                int result = _dbAccessLogic.UseTrustedCode(trustedCode.CodeString.ToUpper(), currentUserId);
+                if (result > 0)
+                {
+                    IdentityUser user = await _userManager.GetUserAsync(currentUser);
+                    await _userManager.AddToRoleAsync(user, "Trusted");
+                    return Ok();
+                }
             }
 
             // If we get here something went wrong, return error
@@ -97,10 +101,6 @@ namespace TheFortress.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RegisterAjax(InputModel input)
         {
-            //string ReturnUrl;
-            //IList<AuthenticationScheme> ExternalLogins;
-            //returnUrl = returnUrl ?? Url.Content("~/");
-            //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
                 string email = input.RegisterModel.Email;
@@ -178,7 +178,7 @@ namespace TheFortress.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-        return BadRequest(ModelState);
+            return BadRequest(ModelState);
         }
         
         #endregion

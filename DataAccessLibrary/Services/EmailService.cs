@@ -1,17 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Net.Mail;
-using System.Net.Security;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using RestSharp;
 using RestSharp.Authenticators;
 
-namespace DataAccessLibrary.Security
+namespace DataAccessLibrary.Services
 {
     public class EmailService : IEmailService
     {

@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace DataAccessLibrary.Security
+namespace DataAccessLibrary.Services
 {
     public interface IVirusScanService
     {

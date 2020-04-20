@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using DataAccessLibrary.Models;
+using DataAccessLibrary.Services;
 using DataAccessLibrary.SqlDataAccess;
 using DataAccessLibrary.Utilities;
 
 namespace DataAccessLibrary.Logic
 {
-    public class DbInsert
+    public partial class DbAccessLogic
     {
-        private readonly DataAccess _dataAccess;
-
-        public DbInsert(DataAccess dataAccess)
-        {
-            _dataAccess = dataAccess;
-        }
         // Admin create concert
         public int CreateConcertDate(LocalConcert localConcert)
         {
@@ -21,7 +16,7 @@ namespace DataAccessLibrary.Logic
             var end = localConcert.TimeEnd;
             
             // 0 : parent row Id(event), 1: child row id (concert)
-            return _dataAccess.ExecuteProcedure("InsertLocalConcert", "@concertId",
+            return _dataAccessService.ExecuteProcedure("InsertLocalConcert", "@concertId",
                 Pairing.Of("@artists", localConcert.Artists),
                 Pairing.Of("@flyerurl", localConcert.FlyerUrl),
                 Pairing.Of("@timestart", localConcert.TimeStart),
@@ -33,23 +28,24 @@ namespace DataAccessLibrary.Logic
 
         public int CreateTrustedCode(string code)
         {
-            return _dataAccess.ExecuteProcedure("InsertTrustedCode", null,
+            return _dataAccessService.ExecuteProcedure("InsertTrustedCode", null,
                 Pairing.Of("@codetext", code.ToUpper()));
         }
 
         public int CreateTrustedCode(string code, int? max)
         {
-            return _dataAccess.ExecuteProcedure("InsertTrustedCode", "@codeId",
+            return _dataAccessService.ExecuteProcedure("InsertTrustedCode", "@codeId",
                 Pairing.Of("@codetext", code.ToUpper()),
                 Pairing.Of("@maxTimes", max));
         }
 
+        // Tested and working
         public int CreateQueuedDate(LocalConcert localConcert, string userId)
         {
             bool nullTimeEnd = localConcert.TimeEnd == DateTime.MinValue;
             var end = localConcert.TimeEnd;
 
-            return _dataAccess.ExecuteProcedure("InsertConcertToApprovalQueue", null,
+            return _dataAccessService.ExecuteProcedure("InsertConcertToApprovalQueue", null,
                 Pairing.Of("@userId", userId),
                 Pairing.Of("@event", localConcert.Artists),
                 Pairing.Of("@venueName", localConcert.VenueName),
@@ -62,7 +58,7 @@ namespace DataAccessLibrary.Logic
             bool nullTimeEnd = houseShow.TimeEnd == DateTime.MinValue;
             var end = houseShow.TimeEnd;
 
-            return _dataAccess.ExecuteProcedure("InsertShowToApprovalQueue", null,
+            return _dataAccessService.ExecuteProcedure("InsertShowToApprovalQueue", null,
                 Pairing.Of("@userId", userId),
                 Pairing.Of("@event", houseShow.Artists),
                 Pairing.Of("@venueName", houseShow.VenueName),
@@ -73,7 +69,7 @@ namespace DataAccessLibrary.Logic
 
         public int AddAdminMessage(MessageModel messageModel)
         {
-            return _dataAccess.ExecuteProcedure("InsertAdminMessage", null,
+            return _dataAccessService.ExecuteProcedure("InsertAdminMessage", null,
                 Pairing.Of("@sender", messageModel.Sender),
                 Pairing.Of("@message", messageModel.Message),
                 Pairing.Of("@date", messageModel.Date),
@@ -83,7 +79,7 @@ namespace DataAccessLibrary.Logic
 
         public int AddComment(CommentModel commentModel)
         {
-            return _dataAccess.ExecuteProcedure("InsertComment", "commentId",
+            return _dataAccessService.ExecuteProcedure("InsertComment", "commentId",
                 Pairing.Of("@content", commentModel.Content),
                 Pairing.Of("@userId", commentModel.UserId),
                 Pairing.Of("@datestamp", commentModel.DateStamp),

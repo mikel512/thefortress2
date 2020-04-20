@@ -1,8 +1,10 @@
 ﻿@model TheFortress.Models.TrustedInputEvent
 @* TODO restructure form switch buttons *@
 <div>
-    <a class="btn btn-outline-light" href="#" id="showConcertForm">Add Concert</a>
-    <a class="btn btn-outline-light" href="#" id="showShowForm">Add House Show!</a>
+    <select id="formConcertOptions">
+        <option class="" href="#" id="showConcertForm">Add Concert</option>
+        <option class="" href="#" id="showShowForm">Add House Show!</option>
+    </select>
 </div>
 <div id="concertForm">
     <form>
@@ -49,7 +51,7 @@
         <div class="row pt-2">
             <div class="col-9"></div>
             <div class="col-3">
-                <a id="concertUploadButton" class="btn btn-primary text-nowrap">Add Concert</a>
+                <button id="concertUploadButton" class="btn btn-primary text-nowrap">Add Concert</button>
                 <output form="uploadForm" name="result"></output>
             </div>
         </div>
@@ -96,7 +98,7 @@
         <div class="row pt-2">
             <div class="col-9"></div>
             <div class="col-3">
-                <a id="showUploadButton" class="btn btn-primary text-nowrap">Add House Show</a>
+                <a class="btn btn-primary text-nowrap">Add House Show</a>
                 <output form="uploadForm" name="result"></output>
             </div>
         </div>

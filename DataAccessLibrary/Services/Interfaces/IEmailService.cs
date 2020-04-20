@@ -1,7 +1,6 @@
-﻿using System.Threading.Tasks;
-using RestSharp;
+﻿using RestSharp;
 
-namespace DataAccessLibrary.Security
+namespace DataAccessLibrary.Services
 {
     public interface IEmailService
     {

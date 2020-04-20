@@ -6,9 +6,8 @@ using System.Net;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using DataAccessLibrary.FileStoreAccess;
 using DataAccessLibrary.Models;
-using DataAccessLibrary.Security;
+using DataAccessLibrary.Services;
 using DataAccessLibrary.SqlDataAccess;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -76,7 +75,7 @@ namespace TheFortress.Controllers
             // Add the rest of the entries to database if the file upload is successful
             ClaimsPrincipal currentUser = this.User;
             string currentUserId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
-            Insert.CreateQueuedDate(houseShow, currentUserId);
+            _dbAccessLogic.CreateQueuedDate(houseShow, currentUserId);
 
             return Ok();
         }
@@ -120,8 +119,8 @@ namespace TheFortress.Controllers
             ClaimsPrincipal currentUser = this.User;
             string currentUserId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            // Insert to db
-            Insert.CreateQueuedDate(concert, currentUserId);
+            // _dbAccessLogic to db
+            _dbAccessLogic.CreateQueuedDate(concert, currentUserId);
 
             return Ok();
 

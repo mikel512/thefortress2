@@ -501,3 +501,23 @@ $('#showShowForm').click(function () {
 
 $('#test').click(function(){
 });
+function loadingSkullModal() {
+    $('#addToApprovalForm').hide();
+    $('#loadingSkull').show();
+    warningToast.fire({
+        title: "Uploading file",
+        position: "center",
+        timer: 1800
+    });
+}
+addConcertSuccess = function (response) {
+    successToast.fire({
+        title: 'Concert added successfully',
+        position: 'top-end',
+        timer: 2000,
+        onClose: () => {
+            sleep(100);
+            window.location.reload();
+        }
+    });
+};

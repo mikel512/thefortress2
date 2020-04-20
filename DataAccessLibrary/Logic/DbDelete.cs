@@ -1,34 +1,35 @@
-﻿using DataAccessLibrary.SqlDataAccess;
+﻿using DataAccessLibrary.Services;
+using DataAccessLibrary.SqlDataAccess;
 using DataAccessLibrary.Utilities;
 
 namespace DataAccessLibrary.Logic
 {
-    public class DbDelete
+    public partial class DbAccessLogic
     {
-        private readonly DataAccess _dataAccess;
+        private readonly DataAccessService _dataAccessService;
 
-        public DbDelete(DataAccess dataAccess)
+        public DbAccessLogic(DataAccessService dataAccessService)
         {
-            _dataAccess = dataAccess;
+            _dataAccessService = dataAccessService;
         }
         public int DeleteConcert(int localConcertId)
         {
-            return _dataAccess.ExecuteProcedure("DeleteLocalConcert", "", 
+            return _dataAccessService.ExecuteProcedure("DeleteLocalConcert", "", 
                 Pairing.Of("@concertId", localConcertId));
         }
         public int DeleteShow(int showId)
         {
-            return _dataAccess.ExecuteProcedure("DeleteHouseShow", "", 
+            return _dataAccessService.ExecuteProcedure("DeleteHouseShow", "", 
                 Pairing.Of("@houseshowId", showId));
         }
         public int DeleteCode(int codeId)
         {
-            return _dataAccess.ExecuteProcedure("DeleteTrustedCode", "",
+            return _dataAccessService.ExecuteProcedure("DeleteTrustedCode", "",
                 Pairing.Of("@codeid", codeId));
         }
         public int DeleteQueueEntry(int queueId)
         {
-            return _dataAccess.ExecuteProcedure("DeleteQueueEntry", "",
+            return _dataAccessService.ExecuteProcedure("DeleteQueueEntry", "",
                 Pairing.Of("@queueid", queueId));
         }
 

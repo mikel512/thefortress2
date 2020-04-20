@@ -17,16 +17,18 @@ namespace DataAccessLibrary.Models
         [Display(Name = "Flyer URL")]
         public string FlyerUrl { get; set; }
         
+        [Required]
         [Display(Name = "Flyer")]
         [FileExtensions(Extensions = "jpg,jpeg")]
         public IFormFile FlyerFile { get; set; }
 
-        // TODO adjust validation so DateTime objects without a time field produce ajax error
-        [Required]
+        [Required(ErrorMessage = "Start date and time is required")]
         [Display(Name = "Date and Start Time")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy HH/mm}")]
         public DateTime TimeStart { get; set; }
 
         [Display(Name = "Time End (optional)")]
+        [DataType(DataType.Date, ErrorMessage = "Wrong format")]
         public DateTime? TimeEnd { get; set; }
 
         [Display(Name = "Is Approved?")] 
