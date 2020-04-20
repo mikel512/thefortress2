@@ -37,7 +37,7 @@ namespace TheFortress
             services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.HttpOnly = true;
-                options.Cookie.Expiration = TimeSpan.FromHours(1);
+                options.ExpireTimeSpan = TimeSpan.FromHours(1);
                 options.SlidingExpiration = false;
             });
             services.AddControllersWithViews();

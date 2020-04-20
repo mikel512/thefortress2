@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using TheFortress.Models;
 using DataAccessLibrary.Models;
 using System.Security.Claims;
+using DataAccessLibrary.Logic;
 using Microsoft.AspNetCore.Authorization;
 using DataAccessLibrary.Services;
 using Microsoft.AspNetCore.Http;
@@ -17,15 +18,17 @@ using Microsoft.AspNetCore.Identity;
 
 namespace TheFortress.Controllers
 {
-    public class HomeController : FortressController<HomeController>
+    public class HomeController : Controller
     {
+        private readonly DbAccessLogic _dbAccessLogic;
+        private readonly UserManager<IdentityUser> _userManager;
+        
         // Constructor
-        public HomeController(ILogger<HomeController> logger, IStorageService storageService,
-            UserManager<IdentityUser> userManager,
-            ApplicationDbContext applicationDbContext,
-            RoleManager<IdentityRole> roleManager) : base(logger, userManager, storageService, applicationDbContext,
-            roleManager)
+        public HomeController(UserManager<IdentityUser> userManager, ApplicationDbContext applicationDbContext)
         {
+            var dataAccessService = new DataAccessService(applicationDbContext);
+            _dbAccessLogic = new DbAccessLogic(dataAccessService);
+            _userManager = userManager;
         }
 
         #region Views
@@ -39,24 +42,6 @@ namespace TheFortress.Controllers
             }
 
             ViewData["imgArray"] = imgArray;
-
-            // using (FileStream stream = System.IO.File.OpenRead(@"C:\Users\mikel\Desktop\opeth-flyer.jpg"))
-            // {
-            //     var file = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
-            //     {
-            //         Headers = new HeaderDictionary(),
-            //         ContentType = "application/pdf"
-            //     };
-            //     var tst = new LocalConcert()
-            //     {
-            //         Artists = "TESTARTISTS",
-            //         VenueName = "TESTVENUE",
-            //         TimeStart = DateTime.Today,
-            //         FlyerFile = file,
-            //         
-            //     };
-            //     await AddToApprovalUser(tst);
-            // }
 
             return View();
         }
@@ -95,32 +80,6 @@ namespace TheFortress.Controllers
 
         #region AjaxCalls
 
-        [HttpPost]
-        [Authorize(Roles = "User, Artist, Administrator")]
-        public async Task<IActionResult> AddToApprovalUser(LocalConcert localConcert)
-        {
-            //check if file length is too long
-            if (localConcert.FlyerFile.Length > 6000000)
-            {
-                ModelState.AddModelError("File",
-                    $"The request couldn't be processed (File size exceeded).");
-                // Log error
-                return BadRequest(ModelState);
-            }
-
-            // Scan and upload file
-            localConcert.FlyerUrl = await _storageService.StoreImageFile(localConcert.FlyerFile);
-
-            // Get user id
-            ClaimsPrincipal currentUser = this.User;
-            string currentUserId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-            // Add date to queue; admin must then approve
-            _dbAccessLogic.CreateQueuedDate(localConcert, currentUserId);
-            // _dbAccessLogic.CreateQueuedDate(localConcert, "371217ea-6458-40eb-ace7-4d5c83df2469");
-
-            return Ok();
-        }
 
         public IActionResult AddAdminMsgAjax(MessageModel messageModel)
         {

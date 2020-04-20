@@ -29,12 +29,14 @@
             <div class="col-10" id="addToApprovalForm">
                 @if (this.User.IsInRole("Trusted") || this.User.IsInRole("Administrator"))
                 {
-                    <partial name="~/Views/Trusted/_TrustedConcertForm.cshtml"/>
+                    <div id="TrustConcert">
+                        <partial name="~/Views/Trusted/_TrustedConcertForm.cshtml"/>
+                    </div>
                 }
                 else
                 {
                     // Tested and working
-                    <partial name="~/Views/Home/_LocalConcertForm.cshtml"/>
+                    <partial name="~/Views/Home/_ConcertForm.cshtml"/>
                 }
             </div>
             <img src="~/img/icons/loading_skull.gif" class="col-10" id="loadingSkull" alt="" style="display: none"/>

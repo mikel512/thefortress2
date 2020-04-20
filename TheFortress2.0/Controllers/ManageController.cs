@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using DataAccessLibrary.Logic;
 using DataAccessLibrary.Models;
 using DataAccessLibrary.Services;
 using DataAccessLibrary.SqlDataAccess;
@@ -21,21 +22,26 @@ using TheFortress.Models;
 namespace TheFortress.Controllers
 {
     [Authorize(Roles = "User, Artist, Trusted, Administrator")]
-    public class ManageController : FortressController<ManageController>
+    public class ManageController : Controller
     {
         private readonly SignInManager<IdentityUser> _signInManager;
-        private IEmailService _emailService;
+        private readonly ILogger<ManageController> _logger;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly DbAccessLogic _dbAccessLogic;
+        private readonly IEmailService _emailService;
         
         public ManageController(ILogger<ManageController> logger, 
-            IStorageService storageService,
             UserManager<IdentityUser> userManager, 
             ApplicationDbContext applicationDbContext, 
-            RoleManager<IdentityRole> roleManager,
             IEmailService emailService,
-            SignInManager<IdentityUser> signInManager) : base(logger, userManager, storageService,applicationDbContext, roleManager)
+            SignInManager<IdentityUser> signInManager)
         {
+            var dataAccessService = new DataAccessService(applicationDbContext);
+            _dbAccessLogic = new DbAccessLogic(dataAccessService);
             _signInManager = signInManager;
             _emailService = emailService;
+            _logger = logger;
+            _userManager = userManager;
         }
 
         public IActionResult TrustedPass()

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using DataAccessLibrary.Models;
 using DataAccessLibrary.Services;
 using DataAccessLibrary.SqlDataAccess;
@@ -11,44 +12,44 @@ namespace DataAccessLibrary.Logic
         // Simple multi-row queries
         public List<ApprovalQueue> GetQueueDash()
         {
-            return _dataAccessService.ExecuteProcedure<ApprovalQueue>("GetQueueAdminDashboard");
+            return _dataAccessService.ExecuteProcedureAsync<ApprovalQueue>("GetQueueAdminDashboard").Result.ToList();
         }
 
         public List<LocalConcert> GetLocalConcerts()
         {
-            return _dataAccessService.ExecuteProcedure<LocalConcert>("GetLocalConcerts");
+            return _dataAccessService.ExecuteProcedureAsync<LocalConcert>("GetLocalConcerts").Result.ToList();
         }
         public List<LocalConcert> GetApprovedLocalConcerts()
         {
-            return _dataAccessService.ExecuteProcedure<LocalConcert>("GetApprovedLocalConcerts");
+            return _dataAccessService.ExecuteProcedureAsync<LocalConcert>("GetApprovedLocalConcerts").Result.ToList();
         }
         public List<HouseShow> GetApprovedHouseShows()
         {
-            return _dataAccessService.ExecuteProcedure<HouseShow>("GetApprovedHouseShows");
+            return _dataAccessService.ExecuteProcedureAsync<HouseShow>("GetApprovedHouseShows").Result.ToList();
         }
 
         public List<HouseShow> GetHouseShows()
         {
-            return _dataAccessService.ExecuteProcedure<HouseShow>("GetHouseShows");
+            return _dataAccessService.ExecuteProcedureAsync<HouseShow>("GetHouseShows").Result.ToList();
         }
         public List<TrustedCode> GetAllTrustedCodes()
         {
-            return _dataAccessService.ExecuteProcedure<TrustedCode>("GetAllTrustedCodes");
+            return _dataAccessService.ExecuteProcedureAsync<TrustedCode>("GetAllTrustedCodes").Result.ToList();
         }
 
         public List<UserWithRole> GetUsersWithRoles()
         {
-            return _dataAccessService.ExecuteProcedure<UserWithRole>("GetAllUsersWithRoles");
+            return _dataAccessService.ExecuteProcedureAsync<UserWithRole>("GetAllUsersWithRoles").Result.ToList();
         }
 
         public List<AspNetRole> GetRoles()
         {
-            return _dataAccessService.ExecuteProcedure<AspNetRole>("GetRoles");
+            return _dataAccessService.ExecuteProcedureAsync<AspNetRole>("GetRoles").Result.ToList();
         }
 
         public List<MessageModel> GetAdminMessages()
         {
-            return _dataAccessService.ExecuteProcedure<MessageModel>("GetAdminMessages");
+            return _dataAccessService.ExecuteProcedureAsync<MessageModel>("GetAdminMessages").Result.ToList();
         }
         
         // Read the event dates
@@ -94,7 +95,8 @@ namespace DataAccessLibrary.Logic
         }
         private List<LocalConcert> GetApprovedConcerts()
         {
-            var list = _dataAccessService.ExecuteProcedure<LocalConcert>("GetApprovedLocalConcerts");
+            var list = _dataAccessService.ExecuteProcedureAsync<LocalConcert>("GetApprovedLocalConcerts").Result
+                .ToList();
             foreach (var concert in list)
             {
                 var concertId = concert.EventConcertId;
@@ -108,7 +110,7 @@ namespace DataAccessLibrary.Logic
         }
         private List<HouseShow> GetApprovedShows()
         {
-            var list = _dataAccessService.ExecuteProcedure<HouseShow>("GetApprovedHouseShows");
+            var list = _dataAccessService.ExecuteProcedureAsync<HouseShow>("GetApprovedHouseShows").Result.ToList();
             foreach (var concert in list)
             {
                 var concertId = concert.EventConcertId;
@@ -120,31 +122,16 @@ namespace DataAccessLibrary.Logic
 
             return list;
         }
-        public int UseTrustedCode(string code, string userId)
-        {
-            // first check if code exists in db
-            int exists = _dataAccessService.ExecuteProcedure("CheckTrustedCode", "@count",
-                Pairing.Of("@code", code));
-
-            // if exists = 1 continue, if 0 immediately exit
-            if (exists == 0) return exists;
-
-            // else, use the code
-            return _dataAccessService.ExecuteProcedure("UseCodeUser", null,
-                Pairing.Of("@codeString", code),
-                Pairing.Of("@userId", userId));
-        }
-
 
 
         private Dictionary<int?, List<CommentModel>> GetAllComments(int eventId)
         {
             // Key: parentId; Value: list of child comments for that parentId
             var commentDict = new Dictionary<int?, List<CommentModel>>();
-            
-            var allComments 
-                = _dataAccessService.ExecuteProcedure<CommentModel>("GetAllEventComments", 
-                Pairing.Of("@eventId", eventId));
+
+            var allComments
+                = _dataAccessService.ExecuteProcedureAsync<CommentModel>("GetAllEventComments",
+                    Pairing.Of("@eventId", eventId)).Result.ToList();
             
             // sort into dictionary
             foreach (var comment in allComments)

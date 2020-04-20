@@ -1,0 +1,52 @@
+﻿@model DataAccessLibrary.Models.LocalConcert
+<form asp-action="AddToApprovalUser" asp-controller="Trusted"
+      id="addConcertForm"
+      enctype="multipart/form-data"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-begin="loadingSkullModal"
+      data-ajax-success="addConcertSuccess"
+      data-ajax-failure="genericFailure">
+    <div class="row">
+        <div class="col-12">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label class="text-light" asp-for="Artists"></label>
+                <input asp-for="Artists" class="form-control"/>
+                <span asp-validation-for="Artists" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="text-light" asp-for="VenueName"></label>
+                <input asp-for="VenueName" class="form-control"/>
+                <span asp-validation-for="VenueName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="text-light" asp-for="TimeStart"></label>
+                <input asp-for="TimeStart" class="form-control"/>
+                <span asp-validation-for="TimeStart" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="text-light" asp-for="TimeEnd"></label>
+                <input asp-for="TimeEnd" class="form-control"/>
+                <span asp-validation-for="TimeEnd" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="text-light" asp-for="FlyerFile"></label>
+                <input asp-for="FlyerFile" class="form-control" accept=".jpg, .jpeg"/>
+                <span asp-validation-for="FlyerFile" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="text-light" asp-for="UserNotes"></label>
+                <textarea asp-for="UserNotes" class="form-control"  rows="4"></textarea>
+                <span asp-validation-for="UserNotes" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row pt-2">
+        <div class="col-9"></div>
+        <div class="col-3">
+            <button class="btn btn-primary text-nowrap">Add Date</button>
+            <output form="uploadForm" name="result"></output>
+        </div>
+    </div>
+</form>

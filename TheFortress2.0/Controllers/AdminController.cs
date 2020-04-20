@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DataAccessLibrary.Logic;
 using Microsoft.AspNetCore.Mvc;
 using DataAccessLibrary.Models;
 using DataAccessLibrary.Services;
@@ -14,13 +15,25 @@ using Microsoft.Extensions.Logging;
 namespace TheFortress.Controllers
 {
     [Authorize(Roles = "Administrator")]
-    public class AdminController : FortressController<AdminController>
+    public class AdminController : Controller
     {
+        private readonly ILogger<AdminController> _logger;
+        private readonly IStorageService _storageService;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly DbAccessLogic _dbAccessLogic;
+        
         public AdminController(ILogger<AdminController> logger, UserManager<IdentityUser> userManager,IStorageService storageService,
             ApplicationDbContext applicationDbContext, RoleManager<IdentityRole> roleManager
-            ) : base(logger,
-            userManager, storageService ,applicationDbContext, roleManager)
+            ) 
         {
+            var dataAccessService = new DataAccessService(applicationDbContext);
+            _dbAccessLogic = new DbAccessLogic(dataAccessService);
+            _logger = logger;
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _storageService = storageService;
+            
         }
 
         [HttpGet]
@@ -114,8 +127,7 @@ namespace TheFortress.Controllers
         {
             if (itemId > 0 && !itemId.Equals(null))
             {
-                var e = _dataAccessService.ExecuteProcedure("ApproveQueueItem", "",
-                    Pairing.Of("@queueId", itemId));
+                var e = _dbAccessLogic.ApproveQueueItem(itemId);
                 return Json(new Dictionary<string, string>() {["0"] = itemId.ToString()});
             }
 
