@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheFortress2.0", "TheFortre
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLibrary", "DataAccessLibrary\DataAccessLibrary.csproj", "{5855C545-F169-4199-B312-1A7B0CE86541}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheFortress.Tests", "TheFortress.Tests\TheFortress.Tests.csproj", "{B4E31458-B58C-4C0D-A635-777C61FA20D1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{5855C545-F169-4199-B312-1A7B0CE86541}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5855C545-F169-4199-B312-1A7B0CE86541}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5855C545-F169-4199-B312-1A7B0CE86541}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4E31458-B58C-4C0D-A635-777C61FA20D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4E31458-B58C-4C0D-A635-777C61FA20D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4E31458-B58C-4C0D-A635-777C61FA20D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4E31458-B58C-4C0D-A635-777C61FA20D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

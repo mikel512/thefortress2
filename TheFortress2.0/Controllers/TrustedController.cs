@@ -16,13 +16,14 @@ namespace TheFortress.Controllers
     {
         private readonly DbAccessLogic _dbAccessLogic;
         private readonly IStorageService _storageService;
-        
+
         public TrustedController(IStorageService storageService, ApplicationDbContext applicationDbContext)
         {
             var dataAccessService = new DataAccessService(applicationDbContext);
             _dbAccessLogic = new DbAccessLogic(dataAccessService);
             _storageService = storageService;
         }
+
         // GET
         public IActionResult HouseShows()
         {
@@ -40,6 +41,7 @@ namespace TheFortress.Controllers
                 // Log error
                 return BadRequest(ModelState);
             }
+
             if (ModelState.IsValid)
             {
                 // Scan and upload file
@@ -56,7 +58,35 @@ namespace TheFortress.Controllers
 
             return BadRequest();
         }
-        
+
+        public async Task<IActionResult> AddToApprovalTrusted(HouseShow houseShow)
+        {
+            //check if file length is too long
+            if (houseShow.FlyerFile.Length > 6000000)
+            {
+                ModelState.AddModelError("File",
+                    $"The request couldn't be processed (File size exceeded).");
+                // Log error
+                return BadRequest(ModelState);
+            }
+
+            if (ModelState.IsValid)
+            {
+                // Scan and upload file
+                houseShow.FlyerUrl = await _storageService.StoreImageFile(houseShow.FlyerFile);
+                // Get user id
+                ClaimsPrincipal currentUser = User;
+                string currentUserId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+                // Add date to queue; admin must then approve
+                _dbAccessLogic.CreateQueuedDate(houseShow, currentUserId);
+                // _dbAccessLogic.CreateQueuedDate(localConcert, "371217ea-6458-40eb-ace7-4d5c83df2469");
+
+                return Ok();
+            }
+
+            return BadRequest();
+        }
+
         [HttpPost]
         [Authorize(Roles = "User, Artist, Administrator")]
         public async Task<IActionResult> AddToApprovalUser(LocalConcert localConcert)

@@ -29,8 +29,20 @@
             <div class="col-10" id="addToApprovalForm">
                 @if (this.User.IsInRole("Trusted") || this.User.IsInRole("Administrator"))
                 {
-                    <div id="TrustConcert">
-                        <partial name="~/Views/Trusted/_TrustedConcertForm.cshtml"/>
+                    <div>
+                        <p>I am adding a: </p>
+                        <label for="localConcertRadio">Concert</label>
+                        <input type="radio" id="localConcertRadio" name="queueRadio" value="concert"/>
+                        <label for="houseShowRadio">House Show</label>
+                        <input type="radio" id="houseShowRadio" name="queueRadio" value="show"/>
+                        <div id="trustForm1">
+                            <partial name="~/Views/Trusted/_ConcertForm.cshtml"/>
+                            Concert
+                        </div>
+                        <div id="trustForm2" style="display: none">
+                            <partial name="~/Views/Trusted/_ShowForm.cshtml"/>
+                            Show
+                        </div>
                     </div>
                 }
                 else

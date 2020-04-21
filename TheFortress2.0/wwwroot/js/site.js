@@ -521,3 +521,13 @@ addConcertSuccess = function (response) {
         }
     });
 };
+
+$('#localConcertRadio').click(function () {
+    $('#trustForm2').hide();
+    $('#trustForm1').show();
+});
+
+$('#houseShowRadio').click(function () {
+    $('#trustForm1').hide();
+    $('#trustForm2').show();
+});
