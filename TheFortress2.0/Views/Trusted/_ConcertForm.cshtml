@@ -22,12 +22,30 @@
             </div>
             <div class="form-group">
                 <label class="text-light" asp-for="TimeStart"></label>
-                <input asp-for="TimeStart" class="form-control"/>
+                <div id="flatpickrcontainer">
+                    @* <input asp-for="TimeStart" class="form-control"/> *@
+                    <input type="text" id="flatpickr1" name="ShowDate" placeholder="Select Date.." 
+                           />
+                    <a class="input-button" title="toggle">
+                        <i class="icon-calendar"></i>
+                    </a>
+                    <a class="input-button" title="clear">
+                        <i class="icon-close"></i>
+                    </a>
+                </div>
                 <span asp-validation-for="TimeStart" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label class="text-light" asp-for="TimeEnd"></label>
-                <input asp-for="TimeEnd" class="form-control"/>
+                <div id="flatpickrcontainerEnd">
+                    <input type="text" id="TimeEnd" name="TimeEnd" placeholder="Select Date.." data-input>
+                    <a class="input-button" title="toggle" data-toggle>
+                        <i class="icon-calendar"></i>
+                    </a>
+                    <a class="input-button" title="clear" data-clear>
+                        <i class="icon-close"></i>
+                    </a>
+                </div>
                 <span asp-validation-for="TimeEnd" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -45,7 +63,7 @@
     <div class="row pt-2">
         <div class="col-9"></div>
         <div class="col-3">
-            <button class="btn btn-primary text-nowrap">Add Date</button>
+            <button type="submit" class="btn btn-primary text-nowrap">Add Date</button>
             <output form="uploadForm" name="result"></output>
         </div>
     </div>

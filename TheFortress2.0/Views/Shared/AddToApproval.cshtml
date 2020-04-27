@@ -27,29 +27,29 @@
         <div class="row">
             <div class="col-1"></div>
             <div class="col-10" id="addToApprovalForm">
-                @if (this.User.IsInRole("Trusted") || this.User.IsInRole("Administrator"))
-                {
-                    <div>
-                        <p>I am adding a: </p>
-                        <label for="localConcertRadio">Concert</label>
-                        <input type="radio" id="localConcertRadio" name="queueRadio" value="concert"/>
-                        <label for="houseShowRadio">House Show</label>
-                        <input type="radio" id="houseShowRadio" name="queueRadio" value="show"/>
-                        <div id="trustForm1">
-                            <partial name="~/Views/Trusted/_ConcertForm.cshtml"/>
-                            Concert
-                        </div>
-                        <div id="trustForm2" style="display: none">
-                            <partial name="~/Views/Trusted/_ShowForm.cshtml"/>
-                            Show
-                        </div>
-                    </div>
-                }
-                else
-                {
-                    // Tested and working
+                 @if (this.User.IsInRole("Trusted") || this.User.IsInRole("Administrator"))
+                 {
+                     <div>
+                         <p>I am adding a: </p>
+                         <label for="localConcertRadio">Concert</label>
+                         <input type="radio" id="localConcertRadio" name="queueRadio" value="concert"/>
+                         <label for="houseShowRadio">House Show</label>
+                         <input type="radio" id="houseShowRadio" name="queueRadio" value="show"/>
+                         <div id="trustForm1">
+                             <partial name="~/Views/Trusted/_ConcertForm.cshtml"/>
+                             Concert
+                         </div>
+                         <div id="trustForm2" style="display: none">
+                             <partial name="~/Views/Trusted/_ShowForm.cshtml"/>
+                             Show
+                         </div>
+                     </div>
+                 }
+                 else
+                 {
+                    @* // Tested and working *@
                     <partial name="~/Views/Home/_ConcertForm.cshtml"/>
-                }
+                 }
             </div>
             <img src="~/img/icons/loading_skull.gif" class="col-10" id="loadingSkull" alt="" style="display: none"/>
             <div class="col-1"></div>

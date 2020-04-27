@@ -1,14 +1,15 @@
 ﻿using DataAccessLibrary.Services;
+using Microsoft.Extensions.Configuration;
 
 namespace DataAccessLibrary.Logic
 {
-    public partial class DbAccessLogic
+    public partial class DbAccessLogic : IDbAccessLogic
     {
         private readonly DataAccessService _dataAccessService;
 
-        public DbAccessLogic(DataAccessService dataAccessService)
+        public DbAccessLogic(IConfiguration configuration)
         {
-            _dataAccessService = dataAccessService;
+            _dataAccessService = new DataAccessService(configuration["Connection"]);
         }
         
     }

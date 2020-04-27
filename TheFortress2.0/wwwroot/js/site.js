@@ -297,7 +297,7 @@ $("#concertUploadButton").click(function () {
     });
     $('#addToApprovalForm').hide();
     $('#loadingSkull').show();
-    
+
     let file = document.getElementById("FlyerUrlUpload");
     let formData = new FormData();
 
@@ -499,8 +499,9 @@ $('#showShowForm').click(function () {
     $('#concertForm').hide();
 });
 
-$('#test').click(function(){
+$('#test').click(function () {
 });
+
 function loadingSkullModal() {
     $('#addToApprovalForm').hide();
     $('#loadingSkull').show();
@@ -510,6 +511,7 @@ function loadingSkullModal() {
         timer: 1800
     });
 }
+
 addConcertSuccess = function (response) {
     successToast.fire({
         title: 'Concert added successfully',
@@ -530,4 +532,33 @@ $('#localConcertRadio').click(function () {
 $('#houseShowRadio').click(function () {
     $('#trustForm1').hide();
     $('#trustForm2').show();
+});
+
+$(function () {
+    $('#flatpickrcontainerStart').flatpickr({
+        wrap: true,
+        weekNumbers: true,
+        enableTime: true, // enables timepicker default is false
+        minTime: "12:00",
+        maxTime: "22:00",
+        time_24hr: false, // set to false for AM PM default is false
+        altInput: true,
+        altFormat: "F j, Y H:i",
+        onChange: function (selectedDates, dateStr, instance) {
+            console.log("changed");
+        }
+    });
+    $('#flatpickrcontainerEnd').flatpickr({
+        wrap: true,
+        weekNumbers: true,
+        enableTime: true, // enables timepicker default is false
+        minTime: "12:00",
+        maxTime: "22:00",
+        time_24hr: false, // set to false for AM PM default is false
+        altInput: true,
+        altFormat: "F j, Y H:i",
+        onChange: function (selectedDates, dateStr, instance) {
+            console.log("changed");
+        }
+    });
 });

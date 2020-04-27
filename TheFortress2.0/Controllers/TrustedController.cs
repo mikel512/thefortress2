@@ -14,13 +14,13 @@ namespace TheFortress.Controllers
     [Authorize(Roles = "Trusted, Administrator")]
     public class TrustedController : Controller
     {
-        private readonly DbAccessLogic _dbAccessLogic;
         private readonly IStorageService _storageService;
+        private readonly IDbAccessLogic _dbAccessLogic;
 
-        public TrustedController(IStorageService storageService, ApplicationDbContext applicationDbContext)
+        public TrustedController(IStorageService storageService,
+            IDbAccessLogic dbAccessLogic)
         {
-            var dataAccessService = new DataAccessService(applicationDbContext);
-            _dbAccessLogic = new DbAccessLogic(dataAccessService);
+            _dbAccessLogic = dbAccessLogic;
             _storageService = storageService;
         }
 

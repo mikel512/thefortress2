@@ -19,21 +19,19 @@ namespace TheFortress.Controllers
     {
         private readonly ILogger<AdminController> _logger;
         private readonly IStorageService _storageService;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IDbAccessLogic _dbAccessLogic;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly DbAccessLogic _dbAccessLogic;
-        
-        public AdminController(ILogger<AdminController> logger, UserManager<IdentityUser> userManager,IStorageService storageService,
-            ApplicationDbContext applicationDbContext, RoleManager<IdentityRole> roleManager
-            ) 
+
+        public AdminController(ILogger<AdminController> logger,
+            IStorageService storageService,
+            IDbAccessLogic dbAccessLogic,
+            RoleManager<IdentityRole> roleManager
+        )
         {
-            var dataAccessService = new DataAccessService(applicationDbContext);
-            _dbAccessLogic = new DbAccessLogic(dataAccessService);
+            _dbAccessLogic = dbAccessLogic;
             _logger = logger;
-            _userManager = userManager;
             _roleManager = roleManager;
             _storageService = storageService;
-            
         }
 
         [HttpGet]
@@ -80,7 +78,7 @@ namespace TheFortress.Controllers
             {
                 localConcert.FlyerUrl = await _storageService.StoreImageFile(localConcert.FlyerFile);
                 var dictionary = _dbAccessLogic.CreateConcertDate(localConcert);
-                
+
                 // 0 : parent row Id(event), 1: child row id (concert)
                 return Json(dictionary);
             }
@@ -145,6 +143,7 @@ namespace TheFortress.Controllers
 
             return BadRequest();
         }
+
         [HttpGet]
         public IActionResult DeleteShowAjax(int itemId)
         {
@@ -153,7 +152,7 @@ namespace TheFortress.Controllers
                 _dbAccessLogic.DeleteShow(itemId);
                 return Json(new Dictionary<string, string>() {["0"] = itemId.ToString()});
             }
-            
+
             return BadRequest();
         }
 
@@ -165,7 +164,7 @@ namespace TheFortress.Controllers
                 _dbAccessLogic.DeleteCode(itemId);
                 return Json(new Dictionary<string, string>() {["0"] = itemId.ToString()});
             }
-            
+
             return BadRequest();
         }
 

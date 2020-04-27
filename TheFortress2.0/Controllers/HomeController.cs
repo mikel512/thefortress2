@@ -20,15 +20,12 @@ namespace TheFortress.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly DbAccessLogic _dbAccessLogic;
-        private readonly UserManager<IdentityUser> _userManager;
-        
+        private readonly IDbAccessLogic _dbAccessLogic;
+
         // Constructor
-        public HomeController(UserManager<IdentityUser> userManager, ApplicationDbContext applicationDbContext)
+        public HomeController(IDbAccessLogic dbAccessLogic)
         {
-            var dataAccessService = new DataAccessService(applicationDbContext);
-            _dbAccessLogic = new DbAccessLogic(dataAccessService);
-            _userManager = userManager;
+            _dbAccessLogic = dbAccessLogic;
         }
 
         #region Views
@@ -49,9 +46,9 @@ namespace TheFortress.Controllers
         public IActionResult Concerts()
         {
             var concerts = _dbAccessLogic.ApprovedConcertsByMonth();
-            ViewData["concertDictionary"] = concerts;
+            // ViewData["concertDictionary"] = concerts;
 
-            return View();
+            return View(concerts);
         }
 
         public IActionResult Privacy()
@@ -80,8 +77,8 @@ namespace TheFortress.Controllers
 
         #region AjaxCalls
 
-
-        public IActionResult AddAdminMsgAjax(MessageModel messageModel)
+        [HttpPost]
+        public IActionResult MessageAdmin(MessageModel messageModel)
         {
             messageModel.Date = DateTime.Now;
             if (ModelState.IsValid)
@@ -93,18 +90,14 @@ namespace TheFortress.Controllers
             return BadRequest();
         }
 
+        [HttpPost]
         [Authorize(Roles = "User, Artist, Trusted, Administrator")]
         public IActionResult AddComment(CommentModel commentModel)
         {
             // Form only adds EventId and Content properties, fill out the rest
-            ClaimsPrincipal currentUser = this.User;
-            string currentUserId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
-            string userName = _userManager.GetUserName(currentUser);
-            
-            // Add to model
-            commentModel.UserId = currentUserId;
+            commentModel.UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            commentModel.UserName = User.FindFirst(ClaimTypes.Name).Value;
             commentModel.DateStamp = DateTime.Now;
-            commentModel.UserName = userName;
 
             if (ModelState.IsValid)
             {
@@ -119,6 +112,7 @@ namespace TheFortress.Controllers
                     ["4"] = (commentModel.ParentCommentId == null) ? "null" : commentModel.ParentCommentId.ToString()
                 });
             }
+
             //Something went wrong
             return BadRequest();
         }

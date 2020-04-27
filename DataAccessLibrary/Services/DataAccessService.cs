@@ -9,31 +9,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLibrary.Services
 {
-    public class DataAccessService : IDataAccessService
+    public class DataAccessService
     {
-        private ApplicationDbContext _configuration;
+        // private ApplicationDbContext _configuration;
         private string _connection;
 
-        public DataAccessService(ApplicationDbContext configuration)
+        public DataAccessService(string connection)
         {
-            _configuration = configuration;
-        }
-
-        public string ConnectionString
-        {
-            get => Connection();
-            set => _connection = value;
-        }
-
-        private string Connection()
-        {
-            return _configuration.Database.GetDbConnection().ConnectionString;
+            _connection = connection;
         }
 
         public List<T> ExecuteProcedure<T>(string procedure)
         {
             var list = new List<T>();
-            using (var cnn = new SqlConnection(ConnectionString))
+            using (var cnn = new SqlConnection(_connection))
             {
                 cnn.Open();
                 var command = new SqlCommand(procedure, cnn)
@@ -48,7 +37,7 @@ namespace DataAccessLibrary.Services
         }
         public async Task<IEnumerable<T>> ExecuteProcedureAsync<T>(string procedure)
         {
-            using (var cnn = new SqlConnection(ConnectionString))
+            using (var cnn = new SqlConnection(_connection))
             {
                 cnn.Open();
                 var command = new SqlCommand(procedure, cnn)
@@ -63,7 +52,7 @@ namespace DataAccessLibrary.Services
         public List<T> ExecuteProcedure<T>(string procedure, params KeyValuePair<string, object>[] pairs)
         {
             var list = new List<T>();
-            using (var conn = new SqlConnection(ConnectionString))
+            using (var conn = new SqlConnection(_connection))
             {
                 conn.Open();
                 var command = new SqlCommand(procedure, conn)
@@ -80,7 +69,7 @@ namespace DataAccessLibrary.Services
         
         public async Task<IEnumerable<T>> ExecuteProcedureAsync<T>(string procedure, params KeyValuePair<string, object>[] pairs)
         {
-            using (var conn = new SqlConnection(ConnectionString))
+            using (var conn = new SqlConnection(_connection))
             {
                 conn.Open();
                 var command = new SqlCommand(procedure, conn)
@@ -97,7 +86,7 @@ namespace DataAccessLibrary.Services
         public int ExecuteProcedure(string procedure, string outputParam, params KeyValuePair<string, object>[] pairs)
         {
             int id = 1;
-            using (var conn = new SqlConnection(ConnectionString))
+            using (var conn = new SqlConnection(_connection))
             {
                 conn.Open();
                 var command = new SqlCommand(procedure, conn)
@@ -120,7 +109,7 @@ namespace DataAccessLibrary.Services
         public async Task<int> ExecuteProcedureAsync(string procedure, string outputParam, params KeyValuePair<string, object>[] pairs)
         {
             int id = 1;
-            using (var conn = new SqlConnection(ConnectionString))
+            using (var conn = new SqlConnection(_connection))
             {
                 conn.Open();
                 var command = new SqlCommand(procedure, conn)
@@ -144,7 +133,7 @@ namespace DataAccessLibrary.Services
         public Dictionary<string,string> ExecuteProcedureJson(string procedure, string[] outputParams, params KeyValuePair<string, object>[] pairs)
         {
             var dict = new Dictionary<string, string>();
-            using (var conn = new SqlConnection(ConnectionString))
+            using (var conn = new SqlConnection(_connection))
             {
                 conn.Open();
                 var command = new SqlCommand(procedure, conn)
@@ -175,7 +164,7 @@ namespace DataAccessLibrary.Services
         public async Task<Dictionary<string,string>> ExecuteProcedureJsonAsync(string procedure, string[] outputParams, params KeyValuePair<string, object>[] pairs)
         {
             var dict = new Dictionary<string, string>();
-            using (var conn = new SqlConnection(ConnectionString))
+            using (var conn = new SqlConnection(_connection))
             {
                 conn.Open();
                 var command = new SqlCommand(procedure, conn)

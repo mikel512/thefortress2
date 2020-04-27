@@ -1,4 +1,5 @@
 using System;
+using DataAccessLibrary.Logic;
 using DataAccessLibrary.Services;
 using DataAccessLibrary.SqlDataAccess;
 using Microsoft.AspNetCore.Builder;
@@ -43,7 +44,7 @@ namespace TheFortress
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddTransient<UserManager<IdentityUser>>();
-            services.AddTransient<IDataAccessService, DataAccessService>();
+            services.AddTransient<IDbAccessLogic, DbAccessLogic>();
             services.AddTransient<IStorageService, StorageService>();
             services.AddTransient<IEmailService, EmailService>();
 

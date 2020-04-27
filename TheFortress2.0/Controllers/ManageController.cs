@@ -24,39 +24,38 @@ namespace TheFortress.Controllers
     [Authorize(Roles = "User, Artist, Trusted, Administrator")]
     public class ManageController : Controller
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<ManageController> _logger;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly DbAccessLogic _dbAccessLogic;
+        private readonly IDbAccessLogic _dbAccessLogic;
         private readonly IEmailService _emailService;
-        
-        public ManageController(ILogger<ManageController> logger, 
-            UserManager<IdentityUser> userManager, 
-            ApplicationDbContext applicationDbContext, 
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
+
+        public ManageController(ILogger<ManageController> logger,
             IEmailService emailService,
+            IDbAccessLogic dbAccessLogic,
+            UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager)
         {
-            var dataAccessService = new DataAccessService(applicationDbContext);
-            _dbAccessLogic = new DbAccessLogic(dataAccessService);
-            _signInManager = signInManager;
-            _emailService = emailService;
             _logger = logger;
+            _dbAccessLogic = dbAccessLogic;
+            _emailService = emailService;
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         public IActionResult TrustedPass()
         {
             return View();
         }
-        
+
         [AllowAnonymous]
         public IActionResult CheckEmail()
         {
             return View();
         }
-        
+
         #region Ajax Calls
-        
+
         [AllowAnonymous]
         public async Task<IActionResult> ConfirmEmail(string userId, string code)
         {
@@ -81,7 +80,7 @@ namespace TheFortress.Controllers
 
         public async Task<IActionResult> UseTrustedPassAjax(TrustedCode trustedCode)
         {
-            ClaimsPrincipal currentUser = this.User;
+            ClaimsPrincipal currentUser = User;
             string currentUserId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             if (ModelState.IsValid)
@@ -101,7 +100,8 @@ namespace TheFortress.Controllers
 
         #endregion
 
-        #region Identity Logins & Registration 
+        #region Identity Logins & Registration
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -110,7 +110,7 @@ namespace TheFortress.Controllers
             if (ModelState.IsValid)
             {
                 string email = input.RegisterModel.Email;
-                var user = new IdentityUser { UserName = input.RegisterModel.UserNameReg, Email = email };
+                var user = new IdentityUser {UserName = input.RegisterModel.UserNameReg, Email = email};
                 var result = await _userManager.CreateAsync(user, input.RegisterModel.PasswordReg);
                 if (result.Succeeded)
                 {
@@ -125,12 +125,12 @@ namespace TheFortress.Controllers
                     var callbackUrl = Url.Action(
                         "ConfirmEmail",
                         "Manage",
-                        values: new { userId = user.Id, code = code },
+                        values: new {userId = user.Id, code = code},
                         protocol: Request.Scheme);
 
                     // Send confirmation email
-                    _emailService.SendMail("admin@thefortress.me", "Admin",  email, "Confirm your email",
-                    $"Please confirm your account by <a href='{callbackUrl}'>clicking here</a>.");
+                    _emailService.SendMail("admin@thefortress.me", "Admin", email, "Confirm your email",
+                        $"Please confirm your account by <a href='{callbackUrl}'>clicking here</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
@@ -143,11 +143,13 @@ namespace TheFortress.Controllers
                         //return LocalRedirect(returnUrl);
                     }
                 }
+
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
+
             // If we got this far, something failed, redisplay form
             return RedirectToAction("Index", "Home");
         }
@@ -161,16 +163,19 @@ namespace TheFortress.Controllers
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(input.LoginModel.UserNameLogin, input.LoginModel.PasswordLogin, input.LoginModel.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(input.LoginModel.UserNameLogin,
+                    input.LoginModel.PasswordLogin, input.LoginModel.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
                     return Ok();
                 }
+
                 if (result.RequiresTwoFactor)
                 {
                     //return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
                 }
+
                 if (result.IsLockedOut)
                 {
                     _logger.LogWarning("User account locked out.");
@@ -186,8 +191,7 @@ namespace TheFortress.Controllers
             // If we got this far, something failed, redisplay form
             return BadRequest(ModelState);
         }
-        
-        #endregion
 
+        #endregion
     }
 }

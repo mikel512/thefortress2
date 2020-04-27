@@ -3,7 +3,7 @@
 @using TheFortress.Utilities
 @{
     ViewData["Title"] = "Schedule";
-    var items = (Dictionary<int, List<LocalConcert>>) ViewData["concertDictionary"];
+    var items = (Dictionary<int, List<LocalConcert>>)Model;
 }
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4" style="float: left">
